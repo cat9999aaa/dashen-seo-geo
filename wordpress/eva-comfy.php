@@ -30,26 +30,75 @@ function anime_prompt(string $topic, string $shape = 'cover'): string
         . $topic;
 }
 
+function comfy_queue_busy($queue): bool
+{
+    if (!is_array($queue)) {
+        return false;
+    }
+    $running = $queue['queue_running'] ?? [];
+    $pending = $queue['queue_pending'] ?? [];
+    return (is_array($running) && $running !== []) || (is_array($pending) && $pending !== []);
+}
+
+function comfy_lock()
+{
+    $dir = defined('WP_CONTENT_DIR') ? WP_CONTENT_DIR : sys_get_temp_dir();
+    $path = rtrim((string) $dir, '/') . '/dashen-eva-comfy.lock';
+    $handle = fopen($path, 'c');
+    if (!$handle) {
+        return null;
+    }
+    if (!flock($handle, LOCK_EX)) {
+        fclose($handle);
+        return null;
+    }
+    return $handle;
+}
+
 function fetch_comfy_background(string $prompt, string $destination): bool
 {
     $settings = comfy_settings();
     if (!$settings['enabled'] || $settings['url'] === '') {
         return false;
     }
-    $base = $settings['url'];
-    $queue = comfy_json($base . '/queue', null, 8);
-    $running = $queue['queue_running'] ?? [];
-    $pending = $queue['queue_pending'] ?? [];
-    if ((is_array($running) && $running) || (is_array($pending) && $pending)) {
+    $lock = comfy_lock();
+    if (!$lock) {
+        error_log('dashen eva comfy lock failed');
         return false;
+    }
+    try {
+        return fetch_comfy_background_locked($settings['url'], $prompt, $destination);
+    } finally {
+        flock($lock, LOCK_UN);
+        fclose($lock);
+    }
+}
+
+function fetch_comfy_background_locked(string $base, string $prompt, string $destination): bool
+{
+    $started = time();
+    $reachable = false;
+    while (true) {
+        $queue = comfy_json($base . '/queue', null, 8);
+        if ($queue) {
+            $reachable = true;
+            if (!comfy_queue_busy($queue)) {
+                break;
+            }
+        } elseif (!$reachable && (time() - $started) > 60) {
+            error_log('dashen eva comfy unreachable at ' . $base);
+            return false;
+        }
+        sleep(3);
     }
     $graph = comfy_graph($prompt);
     $submitted = comfy_json($base . '/prompt', ['prompt' => $graph, 'client_id' => 'dashen-seo-geo'], 20);
     $id = (string) ($submitted['prompt_id'] ?? '');
     if ($id === '') {
+        error_log('dashen eva comfy submit returned no prompt_id');
         return false;
     }
-    $deadline = time() + 90;
+    $deadline = time() + 1800;
     $image = null;
     while (time() < $deadline) {
         $history = comfy_json($base . '/history/' . rawurlencode($id), null, 15);
@@ -66,6 +115,7 @@ function fetch_comfy_background(string $prompt, string $destination): bool
         sleep(2);
     }
     if (!is_array($image) || empty($image['filename'])) {
+        error_log('dashen eva comfy timed out waiting for ' . $id);
         return false;
     }
     $query = http_build_query([

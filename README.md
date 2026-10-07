@@ -1,6 +1,6 @@
 # 大神 Seo geo 运行时插件
 
-当前版本 0.1.8。归属大神网，源码位于本目录；生产通过瓜奇运行时插件 ZIP 安装和为 `dashen.wang` 单独启用。安装包也放在 GitHub Release：<https://github.com/cat9999aaa/dashen-seo-geo>。
+当前版本 0.1.9。归属大神网，源码位于本目录；生产通过瓜奇运行时插件 ZIP 安装和为 `dashen.wang` 单独启用。安装包也放在 GitHub Release：<https://github.com/cat9999aaa/dashen-seo-geo>。
 
 ## 功能
 
@@ -11,7 +11,7 @@
 - 注册只读瓜奇 MCP 工具 `dashen.seo_audit`，调用者需 `edit_posts` 权限。它检查已发布文章是否有有效作者和瓜奇语言关联，返回缺项，不自动更改文章。
 - `gqPage.single` 只放行 `post_type=page`。非 page，以及非 `publish` 且查看者不是作者也没有 `manage_options` 的 page，在字段 resolver 之前返回 GraphQL `404`。
 - 文章、文档、商品、链接在状态变为 `publish` 后，若没有特色图，排队生成 1200×675 封面。头像、登录大图、会员个人封面不生成。
-- 封面是两套独立产物再叠加：打包的 Eva-Ming 字卡一层，本机 ComfyUI 的 EVA 风格动漫一层。插件只做合成。队列忙或失败时退回纯字卡。默认动漫层不透明度 40%。
+- 封面是两套独立产物再叠加：打包的 Eva-Ming 字卡一层，本机 ComfyUI 的 EVA 风格动漫一层。插件只做合成。Comfy 队列占用时会等到空闲。新文章没有封面时，本机 Comfy 不可达才退回纯字卡。替换已有封面或推广图时，没有动漫层不会覆盖原图，任务会回到队列重试。默认动漫层不透明度 40%。
 - 后台「工具 → 大神封面」可排队替换已发布内容封面，可覆盖推广图 54/55/56（1280×320），也可临时生成一张新推广图。
 
 不接管瓜奇原生页面 SEO、GEO、canonical 或 sitemap。服务器不保留原图；媒体附件仍可能包含 WordPress 需要的多个 WebP 子尺寸。

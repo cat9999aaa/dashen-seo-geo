@@ -3,7 +3,7 @@
   "id": "dashen/seo-geo",
   "name": "大神 Seo geo",
   "description": "WebP 与 alt、文章 SEO 检查、未发布 page 拒绝，以及 Eva-Ming 字卡与 EVA 动漫两套叠加封面",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "wordpressEntry": "wordpress/plugin.php",
   "serverEntry": "node/server/index.mjs",
   "clientComponents": {},

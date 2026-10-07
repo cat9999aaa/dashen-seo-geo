@@ -6,6 +6,7 @@ $GLOBALS['thumbs'] = [];
 $GLOBALS['meta'] = [];
 $GLOBALS['cron'] = [];
 $GLOBALS['posts'] = [];
+$GLOBALS['options'] = [];
 
 function add_action($name, $callback, $priority = 10, $accepted_args = 1): void
 {
@@ -20,7 +21,8 @@ function wp_next_scheduled($hook, $args = []) { return false; }
 function wp_schedule_single_event($timestamp, $hook, $args = []): void { $GLOBALS['cron'][] = ['hook' => $hook, 'args' => $args]; }
 function spawn_cron($time = null): void {}
 function get_post($id) { return $GLOBALS['posts'][$id] ?? null; }
-function get_option($key, $default = false) { return $default; }
+function get_option($key, $default = false) { return $GLOBALS['options'][$key] ?? $default; }
+function update_option($key, $value, $autoload = true): void { $GLOBALS['options'][$key] = $value; }
 function check($condition, $message): void
 {
     if (!$condition) {
@@ -64,5 +66,8 @@ foreach (['docs' => 138, 'product' => 311, 'link' => 305] as $type => $id) {
 }
 
 $GLOBALS['hooks']['transition_post_status']('publish', 'publish', $post);
+check(\Dashen\SeoGeo\eva_can_write_cover(false, []) === true, 'new post may write text card');
+check(\Dashen\SeoGeo\eva_can_write_cover(true, []) === false, 'replace without anime must not write');
+check(\Dashen\SeoGeo\eva_can_write_cover(true, ['animeLayer' => true]) === true, 'replace with anime may write');
 echo "PASS eva publish queue for article/docs/product/link, skip cover and page, replace override\n";
 }
