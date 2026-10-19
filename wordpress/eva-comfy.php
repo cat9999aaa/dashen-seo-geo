@@ -15,15 +15,20 @@ function comfy_settings(): array
     return [
         'enabled' => $enabled,
         'url' => rtrim((string) ($saved['comfyui_url'] ?? 'http://127.0.0.1:8188'), '/'),
-        'opacity' => max(10, min(60, (int) ($saved['background_opacity'] ?? 40))),
+        'opacity' => max(10, min(90, (int) ($saved['background_opacity'] ?? 70))),
+        'custom_background_id' => (int) ($saved['custom_background_id'] ?? 0),
     ];
 }
 
 function anime_prompt(string $topic, string $shape = 'cover'): string
 {
-    $frame = $shape === 'promo'
-        ? '宽幅横构图，电影宽银幕分镜'
-        : '十六比九横构图，电影分镜';
+    if ($shape === 'promo') {
+        $frame = '宽幅横构图，电影宽银幕分镜';
+    } elseif ($shape === 'square') {
+        $frame = '正方形构图，主体居中';
+    } else {
+        $frame = '十六比九横构图，电影分镜';
+    }
     return '新世纪福音战士EVA风格赛璐璐动漫插画，冷色机械与有机混合，暗调，'
         . $frame
         . '，只有画面，不要任何文字、字母、数字、标志、水印、签名或字幕。主题：'
@@ -48,11 +53,20 @@ function comfy_lock()
     if (!$handle) {
         return null;
     }
-    if (!flock($handle, LOCK_EX)) {
-        fclose($handle);
-        return null;
+    $deadline = time() + 20;
+    $nb = defined('LOCK_NB') ? (LOCK_EX | LOCK_NB) : LOCK_EX;
+    while (time() <= $deadline) {
+        if (flock($handle, $nb)) {
+            return $handle;
+        }
+        if ($nb === LOCK_EX) {
+            fclose($handle);
+            return null;
+        }
+        usleep(200000);
     }
-    return $handle;
+    fclose($handle);
+    return null;
 }
 
 function fetch_comfy_background(string $prompt, string $destination): bool
@@ -77,19 +91,31 @@ function fetch_comfy_background(string $prompt, string $destination): bool
 function fetch_comfy_background_locked(string $base, string $prompt, string $destination): bool
 {
     $started = time();
+    $queue_deadline = $started + 90;
     $reachable = false;
-    while (true) {
+    while (time() <= $queue_deadline) {
         $queue = comfy_json($base . '/queue', null, 8);
         if ($queue) {
             $reachable = true;
             if (!comfy_queue_busy($queue)) {
                 break;
             }
-        } elseif (!$reachable && (time() - $started) > 60) {
+        } elseif (!$reachable && (time() - $started) > 20) {
             error_log('dashen eva comfy unreachable at ' . $base);
+            return false;
+        } elseif ($reachable && $queue === []) {
+            error_log('dashen eva comfy dropped after first response');
+            return false;
+        }
+        if (time() >= $queue_deadline) {
+            error_log('dashen eva comfy queue wait expired');
             return false;
         }
         sleep(3);
+    }
+    if (time() > $queue_deadline) {
+        error_log('dashen eva comfy queue wait expired');
+        return false;
     }
     $graph = comfy_graph($prompt);
     $submitted = comfy_json($base . '/prompt', ['prompt' => $graph, 'client_id' => 'dashen-seo-geo'], 20);

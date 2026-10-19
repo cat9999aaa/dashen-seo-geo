@@ -23,6 +23,8 @@ check(\Dashen\SeoGeo\Eva\comfy_queue_busy(['queue_running' => [['x']], 'queue_pe
 check(\Dashen\SeoGeo\Eva\comfy_queue_busy(['queue_running' => [], 'queue_pending' => [['y']]]) === true, 'pending is busy');
 $settings = \Dashen\SeoGeo\Eva\comfy_settings();
 check($settings['enabled'] === true, 'comfy default on');
-check($settings['opacity'] === 40, 'opacity default 40');
+check($settings['opacity'] === 70, 'opacity default 70 unused for full-image multiply');
+check(str_contains(\Dashen\SeoGeo\Eva\anime_prompt('主题', 'square'), '正方形'), 'square comfy prompt');
+check(str_contains(\Dashen\SeoGeo\Eva\anime_prompt('主题', 'promo'), '宽幅'), 'promo comfy prompt');
 echo "PASS eva comfy queue wait helpers\n";
 }

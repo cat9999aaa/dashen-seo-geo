@@ -155,6 +155,19 @@ class WP_Post extends stdClass {}
     $other = guard($nil, 'gqArticle', 'single', ['articleID' => 367], $resolver);
     check($other === $nil && $GLOBALS['get_post_calls'] === $calls, 'gqArticle.single is not wrapped');
 
+    // User IDs and post IDs are separate namespaces: user 3 collides with draft page 3.
+    foreach ([false, true] as $auth_only) {
+        \Dashen\SeoGeo\reset_draft_acl();
+        $calls = $GLOBALS['get_post_calls'];
+        $profile_args = ['postType' => 'profile', 'pageType' => 'single', 'id' => 3, 'authOnly' => $auth_only];
+        $profile = guard($nil, 'GuaqiObject', 'seo', $profile_args, $resolver);
+        check($profile === $nil, 'public user profile must reach native user resolver despite draft post ID collision');
+        check($GLOBALS['get_post_calls'] === $calls, 'profile must never look up a WordPress post');
+        check(!\Dashen\SeoGeo\draft_acl_was_denied(), 'profile must not mark draft denial');
+        $built_profile = ['author' => ['id' => 3, 'name' => '大神']];
+        check(\Dashen\SeoGeo\guard_unpublished_seo_result($built_profile, $profile_args) === $built_profile, 'auth profile backstop must preserve native user result');
+    }
+
     $seo_args = [
         ['postType' => 'page', 'pageType' => 'single', 'id' => 3, 'lang' => 'zh-hans', 'fullPath' => '/page/3', 'authOnly' => false],
         ['postType' => 'page', 'pageType' => 'single', 'id' => 2, 'lang' => 'zh-hans', 'fullPath' => '/page/2', 'authOnly' => false],
