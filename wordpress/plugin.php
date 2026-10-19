@@ -14,6 +14,8 @@ require_once __DIR__ . '/seo-audit.php';
 require_once __DIR__ . '/default-visuals.php';
 require_once __DIR__ . '/draft-acl.php';
 require_once __DIR__ . '/eva-cover.php';
+require_once __DIR__ . '/indexnow.php';
+require_once __DIR__ . '/image-alt.php';
 
 add_filter('wp_handle_upload', __NAMESPACE__ . '\\convert_upload', 20, 2);
 add_filter('wp_handle_sideload', __NAMESPACE__ . '\\convert_upload', 20, 2);

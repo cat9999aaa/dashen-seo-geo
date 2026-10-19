@@ -5,6 +5,10 @@ namespace Dashen\SeoGeo\Eva;
 
 function packed_font_dir(): string
 {
+    $inside = __DIR__ . '/assets/fonts';
+    if (is_readable($inside . '/Eva-Ming-SC-v0.1.otf')) {
+        return $inside;
+    }
     return dirname(__DIR__) . '/assets/fonts';
 }
 
@@ -42,16 +46,19 @@ function raster_webp(array $options, string $target): void
     $layout = $card['layout'];
     $w = (int) $layout['width'];
     $h = (int) $layout['height'];
+    $format_id = (string) ($card['format']['id'] ?? 'article');
 
     $canvas = new \Imagick();
     $canvas->newImage($w, $h, new \ImagickPixel($theme['base']));
     $canvas->setImageFormat('webp');
 
-    $anime = raster_anime_layer((string) ($options['backgroundFile'] ?? ''), $w, $h);
-    if ($anime) {
-        apply_layer_opacity($anime, max(0, min(100, (int) $card['backgroundOpacity'])) / 100);
-        $canvas->compositeImage($anime, \Imagick::COMPOSITE_OVER, 0, 0);
-        $anime->clear();
+    $bg_path = (string) ($options['backgroundFile'] ?? '');
+    $bg = $format_id === 'product'
+        ? contain_on_canvas($bg_path, $w, $h, $theme['base'])
+        : cover_fill($bg_path, $w, $h);
+    if ($bg) {
+        $canvas->compositeImage($bg, \Imagick::COMPOSITE_OVER, 0, 0);
+        $bg->clear();
     }
 
     $title = raster_title_layer($card);
@@ -66,8 +73,14 @@ function raster_webp(array $options, string $target): void
     }
 }
 
-/** Independent anime raster cropped to the cover size. */
-function raster_anime_layer(string $path, int $width, int $height): ?\Imagick
+/** Article list thumb: same chrome on a dedicated 1200×1200 canvas, not a 16:9 crop. */
+function raster_list_square(array $options, string $target): void
+{
+    $options['format'] = 'square';
+    raster_webp($options, $target);
+}
+
+function cover_fill(string $path, int $width, int $height): ?\Imagick
 {
     if ($path === '' || !is_readable($path)) {
         return null;
@@ -77,13 +90,117 @@ function raster_anime_layer(string $path, int $width, int $height): ?\Imagick
     return $bg;
 }
 
-/** Independent EVA title card: chrome + Eva-Ming text on a transparent field. */
+function contain_on_canvas(string $path, int $width, int $height, string $canvasColor): ?\Imagick
+{
+    if ($path === '' || !is_readable($path)) {
+        return null;
+    }
+    $src = new \Imagick($path);
+    $src->thumbnailImage($width, $height, true);
+    $canvas = new \Imagick();
+    $canvas->newImage($width, $height, new \ImagickPixel($canvasColor));
+    $x = (int) round(($width - $src->getImageWidth()) / 2);
+    $y = (int) round(($height - $src->getImageHeight()) / 2);
+    $canvas->compositeImage($src, \Imagick::COMPOSITE_OVER, $x, $y);
+    $src->clear();
+    return $canvas;
+}
+
+/** @deprecated use cover_fill */
+function raster_anime_layer(string $path, int $width, int $height): ?\Imagick
+{
+    return cover_fill($path, $width, $height);
+}
+
+function fit_line(\Imagick $im, string $font, string $text, float $maxW, float $maxSize, float $minSize): float
+{
+    $text = trim($text);
+    if ($text === '') {
+        return $maxSize;
+    }
+    $floor = 4.0;
+    $lo = $floor;
+    $hi = max($maxSize, $floor);
+    $best = $floor;
+    for ($i = 0; $i < 20; $i++) {
+        $mid = ($lo + $hi) / 2;
+        $draw = new \ImagickDraw();
+        $draw->setFont($font);
+        $draw->setTextEncoding('UTF-8');
+        $draw->setFontSize($mid);
+        $m = $im->queryFontMetrics($draw, $text);
+        if (($m['textWidth'] ?? 0) <= $maxW) {
+            $best = $mid;
+            $lo = $mid;
+        } else {
+            $hi = $mid;
+        }
+    }
+    $draw = new \ImagickDraw();
+    $draw->setFont($font);
+    $draw->setTextEncoding('UTF-8');
+    $draw->setFontSize($best);
+    $final = $im->queryFontMetrics($draw, $text);
+    if (($final['textWidth'] ?? 0) > $maxW + 1) {
+        throw new \RuntimeException('标题过长，单行无法放入封面安全区。');
+    }
+    unset($minSize);
+    return $best;
+}
+
+function hazard_band(int $w, int $h): \Imagick
+{
+    $im = new \Imagick();
+    $im->newImage($w, $h, new \ImagickPixel('#111111'));
+    $draw = new \ImagickDraw();
+    $draw->setFillColor(new \ImagickPixel('#E6C200'));
+    $period = max(16, (int) round($h * 1.7));
+    $half = (int) round($period * 0.5);
+    for ($x = -$h - $period; $x < $w + $h + $period; $x += $period) {
+        $draw->polygon([
+            ['x' => $x, 'y' => 0],
+            ['x' => $x + $half, 'y' => 0],
+            ['x' => $x + $half - $h, 'y' => $h],
+            ['x' => $x - $h, 'y' => $h],
+        ]);
+    }
+    $im->drawImage($draw);
+    return $im;
+}
+
+/** annotate Y with GRAVITY_NORTHWEST is the glyph top, not the baseline. */
+function stack_center(\Imagick $im, string $font, string $title, string $sub, float $maxW, float $titleMax, float $titleMin, float $areaTop, float $areaBot, float $gapRatio): array
+{
+    $titleSize = fit_line($im, $font, $title, $maxW, $titleMax, $titleMin);
+    $titleH = $titleSize * 1.08;
+    $subSize = 0.0;
+    $subH = 0.0;
+    if ($sub !== '') {
+        $subSize = fit_line($im, $font, $sub, $maxW, $titleSize * 0.36, $titleMin * 0.5);
+        $subH = $subSize * 1.08;
+    }
+    $gap = $sub !== '' ? max($titleSize * $gapRatio, 14) : 0;
+    $block = $titleH + ($sub !== '' ? $gap + $subH : 0);
+    $top = $areaTop + (($areaBot - $areaTop) - $block) / 2;
+    return [
+        'titleSize' => $titleSize,
+        'subSize' => $subSize,
+        'titleY' => $top,
+        'subY' => $top + $titleH + $gap,
+    ];
+}
+
+/** Independent EVA title card: hazard chrome + Eva-Ming on a transparent field. */
 function raster_title_layer(array $card): \Imagick
 {
     $theme = $card['theme'];
     $layout = $card['layout'];
     $w = (int) $layout['width'];
     $h = (int) $layout['height'];
+    $format_id = (string) ($card['format']['id'] ?? 'article');
+    $product = $format_id === 'product';
+    $promo = $format_id === 'promo';
+    $square = $format_id === 'square';
     $layer = new \Imagick();
     $layer->newImage($w, $h, new \ImagickPixel('transparent'));
     $layer->setImageFormat('png');
@@ -91,41 +208,53 @@ function raster_title_layer(array $card): \Imagick
         $layer->setImageAlphaChannel(\Imagick::ALPHACHANNEL_SET);
     }
 
-    $draw = new \ImagickDraw();
-    $draw->setStrokeColor(new \ImagickPixel($theme['accent']));
-    $draw->setFillColor(new \ImagickPixel('transparent'));
-    $draw->setStrokeWidth(1.5);
-    $ei = $layout['edgeInset'];
-    $draw->line($ei, $layout['railTop'], $w - $ei, $layout['railTop']);
-    $draw->line($ei, $layout['railBottom'], $w - $ei, $layout['railBottom']);
-    $outer = crisp($ei * 0.42);
-    $cut = (int) round(min($w, $h) * 0.055);
-    $draw->setStrokeOpacity(0.72);
-    $draw->polyline([
-        ['x' => $outer, 'y' => $outer],
-        ['x' => $w - $outer - $cut, 'y' => $outer],
-        ['x' => $w - $outer, 'y' => $outer + $cut],
-        ['x' => $w - $outer, 'y' => $h - $outer],
-        ['x' => $outer, 'y' => $h - $outer],
-        ['x' => $outer, 'y' => $outer],
-    ]);
-    $layer->drawImage($draw);
+    if ($product) {
+        $band = max(14, (int) round($h * 0.042));
+    } elseif ($promo) {
+        $band = max(10, (int) round($h * 0.08));
+    } elseif ($square) {
+        $band = max(14, (int) round($h * 0.042));
+    } else {
+        $band = max(14, (int) round($h * 0.055));
+    }
+    $layer->compositeImage(hazard_band($w, $band), \Imagick::COMPOSITE_OVER, 0, 0);
+    if (!$product) {
+        $layer->compositeImage(hazard_band($w, $band), \Imagick::COMPOSITE_OVER, 0, $h - $band);
+        $line = new \ImagickDraw();
+        $line->setStrokeColor(new \ImagickPixel($theme['accent']));
+        $line->setFillColor(new \ImagickPixel('transparent'));
+        $line->setStrokeWidth(max(1, $h / max($h, 1)));
+        $inset = $band + (int) round($h * ($promo ? 0.04 : 0.035));
+        $line->rectangle($inset, $inset, $w - $inset, $h - $inset);
+        $layer->drawImage($line);
+        $maxW = $w - $inset * 2 - 16;
+        $pad = (int) round($h * ($promo ? 0.02 : 0.04));
+        $areaTop = $inset + $pad;
+        $areaBot = $h - $inset - $pad;
+        $gap = 0.40;
+    } else {
+        $maxW = (int) round($w * 0.78);
+        $footH = (int) round($h * 0.07);
+        $areaTop = $band + (int) round($h * 0.08);
+        $areaBot = $h - $footH - (int) round($h * 0.06);
+        $gap = 0.48;
+        $inset = $band;
+    }
 
-    $title_font = title_font();
-    $mono = label_font();
     $c = $card['content'];
-    $ci = $layout['contentInset'];
-    annotate($layer, $c['series'], $ci, $card['seriesY'], $layout['labelFontSize'], $theme['accent'], $mono, 'left');
-    annotate($layer, $c['date'], $w - $ci, $card['seriesY'], $layout['labelFontSize'], $theme['accent'], $mono, 'right');
-    foreach ($card['lines'] as $i => $line) {
-        annotate($layer, $line, $w / 2, $card['firstY'] + $i * $card['lineHeight'], $card['titleSize'], $theme['accent'], $title_font, 'center');
+    $font = title_font();
+    $title = (string) ($c['title'] ?? '');
+    $sub = (string) ($c['subtitle'] ?? '');
+    $title_min = $h * ($product ? 0.048 : 0.042);
+    $s = stack_center($layer, $font, $title, $sub, $maxW, $h * ($product ? 0.125 : 0.13), $title_min, $areaTop, $areaBot, $gap);
+    annotate($layer, $title, $w / 2, $s['titleY'], $s['titleSize'], $theme['accent'], $font, 'center');
+    if ($sub !== '') {
+        annotate($layer, $sub, $w / 2, $s['subY'], $s['subSize'], $theme['muted'] ?? $theme['accent'], $font, 'center');
     }
-    if ($c['subtitle'] !== '') {
-        annotate($layer, $c['subtitle'], $w / 2, $card['subtitleY'], $card['subtitleSize'], $theme['accent'], $mono, 'center');
+    if ($product) {
+        $site = (string) ($c['site'] ?? 'dashen.wang');
+        annotate($layer, $site, $w / 2, $h - $h * 0.045, max(11, $h * 0.022), $theme['muted'] ?? '#9a9a9a', label_font(), 'center');
     }
-    annotate($layer, $c['author'], $ci, $card['authorY'], $layout['labelFontSize'], $theme['accent'], $mono, 'left');
-    $brand = implode(' ／ ', array_filter([$c['handle'], $c['site']], 'strlen'));
-    annotate($layer, $brand, $w - $ci, $card['authorY'], $layout['labelFontSize'], $theme['accent'], $mono, 'right');
     return $layer;
 }
 

@@ -1,20 +1,20 @@
 <?php
 namespace Dashen\SeoGeo;
 
-require_once __DIR__ . '/eva-svg.php';
-require_once __DIR__ . '/eva-raster.php';
-require_once __DIR__ . '/eva-comfy.php';
+require_once __DIR__ . '/eva-api.php';
 
 const EVA_LOCK = '_dashen_eva_cover_lock';
 const EVA_CRON = 'dashen_seo_geo_generate_cover';
 const EVA_BATCH = 'dashen_seo_geo_cover_batch';
 const EVA_QUEUE = 'dashen_eva_cover_queue';
 const EVA_SKIP_MEDIA = [36, 42, 45, 51, 52];
+const EVA_DEFAULT_THUMB = 50;
 const EVA_PROMO_MEDIA = [
     54 => ['title' => '自有 AI 转型', 'subtitle' => '自己的模型'],
     55 => ['title' => '教程与下载', 'subtitle' => '自己的工具'],
     56 => ['title' => 'AI Hub', 'subtitle' => 'Skill 与 MCP'],
 ];
+const EVA_LIST_THUMB_PX = 1200;
 
 function eva_content_types(): array
 {
@@ -42,8 +42,11 @@ function eva_temp_file(string $prefix): string
 add_action('transition_post_status', __NAMESPACE__ . '\\eva_on_publish', 20, 3);
 add_action(EVA_CRON, __NAMESPACE__ . '\\eva_run_cover_job', 10, 1);
 add_action(EVA_BATCH, __NAMESPACE__ . '\\eva_run_batch', 10, 0);
+add_filter('wp_generate_attachment_metadata', __NAMESPACE__ . '\\eva_keep_square_metadata', 20, 2);
+if (\function_exists('add_image_size')) {
+    add_image_size('dashen_sq', 1200, 1200, false);
+}
 add_action('admin_menu', __NAMESPACE__ . '\\eva_admin_menu');
-add_action('admin_post_dashen_eva_save', __NAMESPACE__ . '\\eva_admin_save');
 add_action('admin_post_dashen_eva_promo', __NAMESPACE__ . '\\eva_admin_promo');
 add_action('admin_post_dashen_eva_replace', __NAMESPACE__ . '\\eva_admin_replace');
 
@@ -93,13 +96,307 @@ function eva_run_cover_job(int $post_id): void
 
 function eva_can_write_cover(bool $replace, array $options): bool
 {
-    if (!$replace) {
-        return true;
+    return true;
+}
+
+function eva_is_protected_attachment(int $attachment_id): bool
+{
+    return $attachment_id === EVA_DEFAULT_THUMB || in_array($attachment_id, EVA_SKIP_MEDIA, true);
+}
+
+function eva_excerpt_line(object $post): string
+{
+    $excerpt = trim(wp_strip_all_tags((string) ($post->post_excerpt ?? '')));
+    $lines = preg_split("/\r?\n/", $excerpt) ?: [];
+    $first = trim((string) ($lines[0] ?? ''));
+    if ($first === '') {
+        return '';
     }
-    if (!Eva\comfy_settings()['enabled']) {
-        return true;
+    if (function_exists('mb_substr') && function_exists('mb_strlen')) {
+        return mb_strlen($first) > 32 ? mb_substr($first, 0, 32) : $first;
     }
-    return !empty($options['animeLayer']);
+    return strlen($first) > 32 ? substr($first, 0, 32) : $first;
+}
+
+function eva_subtitle(object $post): string
+{
+    if ((string) ($post->post_type ?? '') === 'product') {
+        return eva_excerpt_line($post);
+    }
+    $cat = eva_first_category($post);
+    return $cat !== '' ? $cat : eva_excerpt_line($post);
+}
+
+function eva_bust_thumb_lite(int $post_id): void
+{
+    if ($post_id <= 0) {
+        return;
+    }
+    if (class_exists('GUAQI\\Common\\PostThumbLiteCache')) {
+        \GUAQI\Common\PostThumbLiteCache::clear($post_id);
+    } else {
+        $keys = function_exists('get_post_custom_keys') ? get_post_custom_keys($post_id) : [];
+        foreach (is_array($keys) ? $keys : [] as $key) {
+            if (strpos((string) $key, '_guaqi_thumb_lite_') === 0) {
+                delete_post_meta($post_id, (string) $key);
+            }
+        }
+    }
+    delete_post_meta($post_id, '_guaqi_cache_product_card_thumbs_lite_v1');
+}
+
+function eva_emit_post_cache(int $post_id): void
+{
+    if ($post_id <= 0 || !class_exists('GUAQI\\Cache\\Events')) {
+        return;
+    }
+    \GUAQI\Cache\Events::emitPost('post.updated', $post_id);
+}
+
+function eva_square_file_beside(string $file): string
+{
+    if ($file === '' || !is_file($file)) {
+        return '';
+    }
+    $square = dirname($file) . DIRECTORY_SEPARATOR . pathinfo($file, PATHINFO_FILENAME) . '-dashen-sq.webp';
+    if (is_file($square)) {
+        return $square;
+    }
+    $info = @getimagesize($file);
+    $w = is_array($info) ? (int) ($info[0] ?? 0) : 0;
+    $h = is_array($info) ? (int) ($info[1] ?? 0) : 0;
+    if ($w === EVA_LIST_THUMB_PX && $h === EVA_LIST_THUMB_PX) {
+        return $file;
+    }
+    return '';
+}
+
+function eva_square_path_for_attachment(int $attachment_id): string
+{
+    if ($attachment_id <= 0 || eva_is_protected_attachment($attachment_id)) {
+        return '';
+    }
+    $file = function_exists('get_attached_file') ? get_attached_file($attachment_id) : '';
+    return is_string($file) ? eva_square_file_beside($file) : '';
+}
+
+function eva_with_link_site_icon(array $extra, string $url): array
+{
+    $extra['site_icon'] = $url;
+    return $extra;
+}
+
+function eva_link_site_icon_attachment_id(int $post_id): int
+{
+    if ($post_id <= 0) {
+        return 0;
+    }
+    if (class_exists('GUAQI\\Common\\Link')) {
+        return (int) \GUAQI\Common\Link::get_link_site_icon_attachment_id($post_id);
+    }
+    $extra = get_post_meta($post_id, '_guaqi_link_extra', true);
+    if (is_array($extra) && array_key_exists('site_icon', $extra)) {
+        $value = $extra['site_icon'];
+        if (is_numeric($value)) {
+            return (int) $value;
+        }
+        if (is_array($value) && isset($value['id'])) {
+            return (int) $value['id'];
+        }
+        if (is_string($value) && $value !== '' && function_exists('attachment_url_to_postid')) {
+            return (int) attachment_url_to_postid($value);
+        }
+    }
+    return (int) get_post_meta($post_id, '_guaqi_link_site_icon_id', true);
+}
+
+function eva_bind_square_copy(int $attachment_id, string $square_path): void
+{
+    if ($attachment_id <= 0 || eva_is_protected_attachment($attachment_id) || !is_file($square_path)) {
+        return;
+    }
+    $file = function_exists('get_attached_file') ? get_attached_file($attachment_id) : '';
+    if (!is_string($file) || $file === '') {
+        return;
+    }
+    $dest = dirname($file) . DIRECTORY_SEPARATOR . pathinfo($file, PATHINFO_FILENAME) . '-dashen-sq.webp';
+    if ($dest !== $square_path && !is_file($dest) && !@copy($square_path, $dest)) {
+        return;
+    }
+    if (is_file($dest)) {
+        eva_bind_square_thumbnail($attachment_id, $dest, true);
+    }
+}
+
+function eva_rebuild_product_cards(int $post_id): void
+{
+    $post = get_post($post_id);
+    if (!$post || (string) ($post->post_type ?? '') !== 'product') {
+        return;
+    }
+    $class = 'GUAQI\\GraphQL\\Querys\\Common\\Module\\Product';
+    if (!class_exists($class)) {
+        return;
+    }
+    try {
+        $ref = new \ReflectionClass($class);
+        if (!$ref->hasMethod('rebuild_product_graphql_caches')) {
+            return;
+        }
+        $method = $ref->getMethod('rebuild_product_graphql_caches');
+        $method->setAccessible(true);
+        $method->invoke(null, $post_id);
+    } catch (\Throwable $error) {
+        error_log('dashen eva product card rebuild ' . $post_id . ': ' . $error->getMessage());
+    }
+}
+
+function eva_sync_link_site_icon(int $post_id): bool
+{
+    $post = get_post($post_id);
+    if (!$post || (string) ($post->post_type ?? '') !== 'link') {
+        return false;
+    }
+    $thumb_id = function_exists('get_post_thumbnail_id') ? (int) get_post_thumbnail_id($post_id) : 0;
+    $square = eva_square_path_for_attachment($thumb_id);
+    if ($square === '') {
+        return false;
+    }
+    $url = function_exists('wp_get_attachment_url') ? wp_get_attachment_url($thumb_id) : '';
+    if (!is_string($url) || $url === '') {
+        return false;
+    }
+    $old_icon_id = eva_link_site_icon_attachment_id($post_id);
+    $extra = get_post_meta($post_id, '_guaqi_link_extra', true);
+    if (!is_array($extra)) {
+        $extra = [];
+    }
+    update_post_meta($post_id, '_guaqi_link_extra', eva_with_link_site_icon($extra, $url));
+    update_post_meta($post_id, '_guaqi_link_site_icon_id', $thumb_id);
+    if ($old_icon_id > 0 && $old_icon_id !== $thumb_id) {
+        eva_bind_square_copy($old_icon_id, $square);
+    }
+    return true;
+}
+
+function eva_refresh_list_thumbnails(): array
+{
+    $done = 0;
+    $skip = 0;
+    $types = eva_content_types();
+    $query = new \WP_Query([
+        'post_type' => $types,
+        'post_status' => 'publish',
+        'posts_per_page' => -1,
+        'fields' => 'ids',
+        'no_found_rows' => true,
+    ]);
+    $ids = is_array($query->posts) ? array_map('intval', $query->posts) : [];
+    foreach ($ids as $post_id) {
+        $thumb_id = (int) get_post_thumbnail_id($post_id);
+        $square = eva_square_path_for_attachment($thumb_id);
+        if ($square === '') {
+            $skip++;
+            continue;
+        }
+        eva_bind_square_thumbnail($thumb_id, $square, basename($square) !== basename((string) get_attached_file($thumb_id)));
+        eva_sync_link_site_icon($post_id);
+        eva_rebuild_product_cards($post_id);
+        eva_bust_thumb_lite($post_id);
+        eva_emit_post_cache($post_id);
+        $done++;
+    }
+    return ['done' => $done, 'skip' => $skip];
+}
+
+function eva_write_square_sizes(int $attachment_id, array $options): void
+{
+    if ($attachment_id <= 0 || eva_is_protected_attachment($attachment_id)) {
+        return;
+    }
+    $format = (string) ($options['format'] ?? 'article');
+    if ($format === 'product' || $format === 'promo') {
+        return;
+    }
+    if (!function_exists('get_attached_file')) {
+        return;
+    }
+    $file = get_attached_file($attachment_id);
+    if (!is_string($file) || $file === '' || !is_file($file)) {
+        return;
+    }
+    $dir = dirname($file);
+    $base = pathinfo($file, PATHINFO_FILENAME);
+    $square_path = $dir . DIRECTORY_SEPARATOR . $base . '-dashen-sq.webp';
+    $source = (string) ($options['_squareFile'] ?? '');
+    if ($source === '' || !is_file($source)) {
+        throw new \RuntimeException('缺少列表方图。');
+    }
+    if (!@copy($source, $square_path) || !is_file($square_path)) {
+        throw new \RuntimeException('无法写入列表方图。');
+    }
+    eva_bind_square_thumbnail($attachment_id, $square_path, true);
+}
+
+function eva_list_thumb_meta(string $file): array
+{
+    return [
+        'file' => basename($file),
+        'width' => EVA_LIST_THUMB_PX,
+        'height' => EVA_LIST_THUMB_PX,
+        'mime-type' => 'image/webp',
+    ];
+}
+
+function eva_bind_square_thumbnail(int $attachment_id, string $square_path, bool $is_list_square = false): void
+{
+    if ($attachment_id <= 0 || eva_is_protected_attachment($attachment_id) || !is_file($square_path)) {
+        return;
+    }
+    $meta = function_exists('wp_get_attachment_metadata') ? wp_get_attachment_metadata($attachment_id) : [];
+    if (!is_array($meta)) {
+        $meta = [];
+    }
+    if (!isset($meta['sizes']) || !is_array($meta['sizes'])) {
+        $meta['sizes'] = [];
+    }
+    $entry = eva_list_thumb_meta($square_path);
+    $meta['sizes']['thumbnail'] = $entry;
+    if ($is_list_square) {
+        $meta['sizes']['dashen_sq'] = $entry;
+        update_post_meta($attachment_id, '_dashen_eva_square', '1');
+    }
+    if (function_exists('wp_update_attachment_metadata')) {
+        wp_update_attachment_metadata($attachment_id, $meta);
+    }
+}
+
+function eva_keep_square_metadata($metadata, $attachment_id)
+{
+    $attachment_id = (int) $attachment_id;
+    if ($attachment_id <= 0 || (string) get_post_meta($attachment_id, '_dashen_eva_square', true) !== '1') {
+        return $metadata;
+    }
+    if (!is_array($metadata)) {
+        $metadata = [];
+    }
+    if (!isset($metadata['sizes']) || !is_array($metadata['sizes'])) {
+        $metadata['sizes'] = [];
+    }
+    $file = function_exists('get_attached_file') ? get_attached_file($attachment_id) : '';
+    if (!is_string($file) || $file === '' || !is_file($file)) {
+        return $metadata;
+    }
+    $dir = dirname($file);
+    $base = pathinfo($file, PATHINFO_FILENAME);
+    $square_path = $dir . DIRECTORY_SEPARATOR . $base . '-dashen-sq.webp';
+    if (!is_file($square_path)) {
+        return $metadata;
+    }
+    $entry = eva_list_thumb_meta($square_path);
+    $metadata['sizes']['dashen_sq'] = $entry;
+    $metadata['sizes']['thumbnail'] = $entry;
+    return $metadata;
 }
 
 function eva_requeue_cover(int $post_id): void
@@ -129,25 +426,37 @@ function eva_apply_cover(int $post_id, bool $replace): void
     if (!in_array((string) $post->post_type, eva_content_types(), true)) {
         return;
     }
-    if (!$replace && has_post_thumbnail($post_id)) {
+    $thumb_id = function_exists('get_post_thumbnail_id') ? (int) get_post_thumbnail_id($post_id) : 0;
+    if ($thumb_id > 0 && eva_is_protected_attachment($thumb_id)) {
+        return;
+    }
+    if (!$replace && $thumb_id > 0) {
         return;
     }
     $options = eva_article_options($post);
-    if (!eva_can_write_cover($replace, $options)) {
-        error_log('dashen eva keep existing cover, no anime layer ' . $post_id);
-        eva_requeue_cover($post_id);
-        return;
+    if ($replace && $thumb_id > 0) {
+        eva_overwrite_attachment($thumb_id, $options);
+        $id = $thumb_id;
+    } else {
+        $id = eva_create_attachment($options, (int) $post_id, sanitize_title($post->post_title) . '-cover.webp');
     }
-    $id = eva_create_attachment($options, (int) $post_id, sanitize_title($post->post_title) . '-cover.webp');
-    if ($id) {
-        set_post_thumbnail($post_id, $id);
-        update_post_meta($post_id, '_dashen_eva_anime', !empty($options['animeLayer']) ? '1' : '0');
-        delete_post_meta($post_id, '_dashen_eva_retry');
+    if ($id <= 0) {
+        throw new \RuntimeException('封面附件写入失败 ' . $post_id);
     }
+    set_post_thumbnail($post_id, $id);
+    delete_post_meta($post_id, '_dashen_eva_retry');
+    eva_sync_link_site_icon($post_id);
+    eva_rebuild_product_cards($post_id);
+    eva_bust_thumb_lite($post_id);
+    eva_emit_post_cache($post_id);
 }
 
 function eva_start_replace_all(): int
 {
+    $existing = get_option(EVA_QUEUE, []);
+    if (is_array($existing) && $existing) {
+        return count(array_map('intval', $existing));
+    }
     global $wpdb;
     $types = "'" . implode("','", array_map('esc_sql', eva_content_types())) . "'";
     $ids = $wpdb->get_col("SELECT ID FROM {$wpdb->posts} WHERE post_status = 'publish' AND post_type IN ($types) ORDER BY ID ASC");
@@ -168,15 +477,34 @@ function eva_run_batch(): void
     if (!is_array($queue) || !$queue) {
         return;
     }
-    $post_id = (int) array_shift($queue);
-    update_option(EVA_QUEUE, array_values($queue), false);
+    $post_id = (int) $queue[0];
+    if ($post_id <= 0) {
+        array_shift($queue);
+        update_option(EVA_QUEUE, array_values($queue), false);
+        return;
+    }
     try {
         eva_apply_cover($post_id, true);
+        $queue = get_option(EVA_QUEUE, []);
+        if (is_array($queue) && (int) ($queue[0] ?? 0) === $post_id) {
+            array_shift($queue);
+            update_option(EVA_QUEUE, array_values($queue), false);
+        }
     } catch (\Throwable $error) {
         error_log('dashen eva batch ' . $post_id . ': ' . $error->getMessage());
+        $queue = get_option(EVA_QUEUE, []);
+        if (!is_array($queue)) {
+            $queue = [];
+        }
+        if ((int) ($queue[0] ?? 0) === $post_id) {
+            array_shift($queue);
+        }
+        update_option(EVA_QUEUE, array_values($queue), false);
+        eva_requeue_cover($post_id);
     }
-    if ($queue && !defined('DASHEN_EVA_INLINE')) {
-        wp_schedule_single_event(time() + 2, EVA_BATCH);
+    $left = get_option(EVA_QUEUE, []);
+    if (is_array($left) && $left && !defined('DASHEN_EVA_INLINE')) {
+        wp_schedule_single_event(time() + 4, EVA_BATCH);
         if (function_exists('spawn_cron')) {
             spawn_cron(time());
         }
@@ -185,37 +513,29 @@ function eva_run_batch(): void
 
 function eva_article_options(object $post): array
 {
-    $settings = Eva\comfy_settings();
-    $options = [
-        'format' => 'article',
-        'backgroundOpacity' => $settings['opacity'],
+    $is_product = (string) $post->post_type === 'product';
+    return [
+        'format' => $is_product ? 'product' : 'article',
+        'themeId' => 'mono',
         'content' => [
             'series' => eva_first_category($post),
             'issue' => '',
-            'date' => mysql2date('Y.m.d', $post->post_date, false) ?: gmdate('Y.m.d'),
+            'date' => mysql2date('Y.m.d', (string) ($post->post_date ?? ''), false) ?: gmdate('Y.m.d'),
             'title' => (string) $post->post_title,
-            'subtitle' => '',
+            'subtitle' => eva_subtitle($post),
             'author' => 'AI最严厉的父亲',
             'handle' => '',
             'site' => 'dashen.wang',
+            'mark' => '',
         ],
     ];
-    $tmp = eva_temp_file('dashen-eva-bg');
-    if ($tmp && Eva\fetch_comfy_background(Eva\anime_prompt((string) $post->post_title, 'cover'), $tmp)) {
-        $options['backgroundFile'] = $tmp;
-        $options['animeLayer'] = true;
-    } elseif ($tmp && is_file($tmp)) {
-        @unlink($tmp);
-    }
-    return $options;
 }
 
 function eva_promo_options(string $headline, string $kicker): array
 {
-    $settings = Eva\comfy_settings();
-    $options = [
+    return [
         'format' => 'promo',
-        'backgroundOpacity' => $settings['opacity'],
+        'themeId' => 'mono',
         'content' => [
             'series' => '',
             'issue' => '',
@@ -225,16 +545,24 @@ function eva_promo_options(string $headline, string $kicker): array
             'author' => '',
             'handle' => '',
             'site' => 'dashen.wang',
+            'mark' => '',
         ],
     ];
-    $tmp = eva_temp_file('dashen-eva-promo-bg');
-    if ($tmp && Eva\fetch_comfy_background(Eva\anime_prompt($headline, 'promo'), $tmp)) {
-        $options['backgroundFile'] = $tmp;
-        $options['animeLayer'] = true;
-    } elseif ($tmp && is_file($tmp)) {
-        @unlink($tmp);
+}
+
+function eva_fetch_cover_pair(array $options): array
+{
+    $main = eva_temp_file('dashen-eva-main');
+    Eva\fetch_cover($options, $main);
+    $square = '';
+    $format = (string) ($options['format'] ?? 'article');
+    if ($format !== 'product' && $format !== 'promo') {
+        $square = eva_temp_file('dashen-eva-sq');
+        $sq = $options;
+        $sq['format'] = 'square';
+        Eva\fetch_cover($sq, $square);
     }
-    return $options;
+    return [$main, $square];
 }
 
 function eva_first_category(object $post): string
@@ -261,12 +589,8 @@ function eva_create_attachment(array $options, int $parent_id, string $filename)
     require_once ABSPATH . 'wp-admin/includes/file.php';
     require_once ABSPATH . 'wp-admin/includes/media.php';
     require_once ABSPATH . 'wp-admin/includes/image.php';
-    $tmp = eva_temp_file($filename);
-    if (!$tmp) {
-        throw new \RuntimeException('无法创建临时封面文件。');
-    }
+    [$tmp, $square] = eva_fetch_cover_pair($options);
     try {
-        Eva\raster_webp($options, $tmp);
         $id = media_handle_sideload([
             'name' => $filename,
             'tmp_name' => $tmp,
@@ -282,38 +606,43 @@ function eva_create_attachment(array $options, int $parent_id, string $filename)
         if ($title !== '') {
             update_post_meta((int) $id, '_wp_attachment_image_alt', sanitize_text_field($title));
         }
+        if ($square !== '') {
+            $options['_squareFile'] = $square;
+            eva_write_square_sizes((int) $id, $options);
+        } elseif ((string) ($options['format'] ?? '') === 'product') {
+            $file = get_attached_file((int) $id);
+            if (is_string($file) && is_file($file)) {
+                eva_bind_square_thumbnail((int) $id, $file, false);
+            }
+        }
+        if ($parent_id > 0) {
+            eva_bust_thumb_lite($parent_id);
+        }
         return (int) $id;
     } finally {
-        if (!empty($options['backgroundFile']) && is_file($options['backgroundFile'])) {
-            @unlink($options['backgroundFile']);
-        }
         if (is_file($tmp)) {
             @unlink($tmp);
+        }
+        if ($square !== '' && is_file($square)) {
+            @unlink($square);
         }
     }
 }
 
 function eva_overwrite_attachment(int $attachment_id, array $options): void
 {
-    if (in_array($attachment_id, EVA_SKIP_MEDIA, true)) {
-        throw new \RuntimeException('跳过头像、登录图和会员封面。');
-    }
-    if (!eva_can_write_cover(true, $options)) {
-        throw new \RuntimeException('推广图缺少动漫层，未覆盖附件 ' . $attachment_id);
+    if (eva_is_protected_attachment($attachment_id)) {
+        throw new \RuntimeException('跳过默认特色图、头像、登录图和会员封面。');
     }
     require_once ABSPATH . 'wp-admin/includes/image.php';
     $file = get_attached_file($attachment_id);
     if (!$file) {
         throw new \RuntimeException('推广图附件不存在：' . $attachment_id);
     }
-    $tmp = eva_temp_file(basename($file));
-    if (!$tmp) {
-        throw new \RuntimeException('无法创建临时推广图。');
-    }
+    [$tmp, $square] = eva_fetch_cover_pair($options);
     try {
-        Eva\raster_webp($options, $tmp);
         if (!@copy($tmp, $file)) {
-            throw new \RuntimeException('无法覆盖推广图文件。');
+            throw new \RuntimeException('无法覆盖封面文件。');
         }
         $meta = wp_generate_attachment_metadata($attachment_id, $file);
         if ($meta) {
@@ -324,13 +653,18 @@ function eva_overwrite_attachment(int $attachment_id, array $options): void
             wp_update_post(['ID' => $attachment_id, 'post_title' => $title]);
             update_post_meta($attachment_id, '_wp_attachment_image_alt', sanitize_text_field($title));
         }
-        update_post_meta($attachment_id, '_dashen_eva_anime', !empty($options['animeLayer']) ? '1' : '0');
-    } finally {
-        if (!empty($options['backgroundFile']) && is_file($options['backgroundFile'])) {
-            @unlink($options['backgroundFile']);
+        if ($square !== '') {
+            $options['_squareFile'] = $square;
+            eva_write_square_sizes($attachment_id, $options);
+        } elseif ((string) ($options['format'] ?? '') === 'product') {
+            eva_bind_square_thumbnail($attachment_id, $file, false);
         }
+    } finally {
         if (is_file($tmp)) {
             @unlink($tmp);
+        }
+        if ($square !== '' && is_file($square)) {
+            @unlink($square);
         }
     }
 }
@@ -352,38 +686,24 @@ function eva_admin_page(): void
     if (!current_user_can('upload_files')) {
         return;
     }
-    $settings = Eva\comfy_settings();
     $notice = sanitize_text_field((string) ($_GET['dashen_eva'] ?? ''));
     $queued = (int) ($_GET['queued'] ?? 0);
     echo '<div class="wrap"><h1>大神封面</h1>';
-    if ($notice === 'saved') {
-        echo '<div class="notice notice-success"><p>设置已保存。</p></div>';
-    }
     if ($notice === 'promo') {
         echo '<div class="notice notice-success"><p>推广图已写入媒体库。</p></div>';
     }
     if ($notice === 'promo-replaced') {
-        echo '<div class="notice notice-success"><p>已按两套叠加替换附件 54 / 55 / 56。</p></div>';
+        echo '<div class="notice notice-success"><p>已用 eva.dashen.wang 覆盖附件 54 / 55 / 56。</p></div>';
     }
     if ($notice === 'queued') {
-        echo '<div class="notice notice-success"><p>已排队替换 ' . (int) $queued . ' 篇内容封面。本机 ComfyUI 一次一张，会等队列空闲；没有动漫层不会覆盖原图。</p></div>';
+        echo '<div class="notice notice-success"><p>已排队替换 ' . (int) $queued . ' 篇内容封面。封面由 eva.dashen.wang HTTP API 生成。失败保留原图。不覆盖附件 50。</p></div>';
     }
     if ($notice === 'error') {
-        echo '<div class="notice notice-error"><p>生成失败，请看服务器错误日志。</p></div>';
+        echo '<div class="notice notice-error"><p>生成失败，请看服务器错误日志。原图未改。</p></div>';
     }
-    echo '<p>文章、文档、商品、链接在<strong>发布后</strong>若没有封面，会自动生成 1200×675 标题图。头像、登录大图、会员个人封面不会动。</p>';
-    echo '<p>封面是两套独立产物再叠加：Eva-Ming 字卡一层，EVA 风格动漫一层。插件只做合成。</p>';
-    echo '<h2>本机 ComfyUI 动漫层</h2><p>默认开启。关掉则只出字卡。队列占用时会一直等到空闲再画。替换已有封面时，没有动漫层就不会覆盖成纯字卡，任务会回到队列重试。</p>';
+    echo '<p>文章、文档、链接发布后若没有封面，向 eva.dashen.wang 请求 1200×675 主图和 1200×1200 列表方图；商品请求 1200×1200。请求失败时保留原图，不回退本地字卡。头像、登录大图、会员个人封面和默认特色图附件 50 不会动。</p>';
     if (current_user_can('manage_options')) {
-        echo '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '">';
-        wp_nonce_field('dashen_eva_save');
-        echo '<input type="hidden" name="action" value="dashen_eva_save"/>';
-        echo '<table class="form-table"><tr><th>启用 ComfyUI</th><td><label><input type="checkbox" name="comfyui_enabled" value="1"' . checked($settings['enabled'], true, false) . '/> 用本机 ComfyUI 生成动漫层</label></td></tr>';
-        echo '<tr><th>地址</th><td><input class="regular-text" name="comfyui_url" value="' . esc_attr($settings['url']) . '" placeholder="http://127.0.0.1:8188"/></td></tr>';
-        echo '<tr><th>动漫层不透明度</th><td><input type="number" min="10" max="60" name="background_opacity" value="' . (int) $settings['opacity'] . '"/> %（默认 40）</td></tr></table>';
-        submit_button('保存设置');
-        echo '</form>';
-        echo '<h2>替换已发布内容封面</h2><p>给每篇已发布的文章/文档/商品/链接各做一张新封面。不改正文、作者。不碰附件 36 / 42 / 45 / 51 / 52。</p>';
+        echo '<h2>替换已发布内容封面</h2><p>给每篇已发布的文章/文档/商品/链接各做一张新封面。不改正文、作者。不碰附件 36 / 42 / 45 / 50 / 51 / 52。已有非保护特色图原地覆盖。</p>';
         echo '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '">';
         wp_nonce_field('dashen_eva_replace');
         echo '<input type="hidden" name="action" value="dashen_eva_replace"/>';
@@ -397,8 +717,6 @@ function eva_admin_page(): void
         echo '<input type="hidden" name="scope" value="promo"/>';
         submit_button('替换三张推广图', 'secondary');
         echo '</form>';
-    } else {
-        echo '<p>当前 ComfyUI：' . ($settings['enabled'] ? '已开' : '关闭') . '。</p>';
     }
     echo '<h2>临时生成一张推广图</h2>';
     echo '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '">';
@@ -408,20 +726,6 @@ function eva_admin_page(): void
     echo '<tr><th>副句（可空）</th><td><input class="regular-text" name="kicker" maxlength="20"/></td></tr></table>';
     submit_button('生成推广图');
     echo '</form></div>';
-}
-
-function eva_admin_save(): void
-{
-    if (!current_user_can('manage_options') || !wp_verify_nonce((string) ($_POST['_wpnonce'] ?? ''), 'dashen_eva_save')) {
-        wp_die('权限不足');
-    }
-    update_option('dashen_eva_cover', [
-        'comfyui_enabled' => !empty($_POST['comfyui_enabled']),
-        'comfyui_url' => esc_url_raw((string) ($_POST['comfyui_url'] ?? 'http://127.0.0.1:8188')),
-        'background_opacity' => max(10, min(60, (int) ($_POST['background_opacity'] ?? 40))),
-    ], false);
-    wp_safe_redirect(admin_url('tools.php?page=dashen-eva-cover&dashen_eva=saved'));
-    exit;
 }
 
 function eva_admin_promo(): void
