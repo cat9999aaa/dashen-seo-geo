@@ -7,6 +7,8 @@ function formats(): array
 {
     return [
         'article' => ['id' => 'article', 'width' => 1200, 'height' => 675],
+        'square' => ['id' => 'square', 'width' => 1200, 'height' => 1200],
+        'product' => ['id' => 'product', 'width' => 1200, 'height' => 1200],
         'promo' => ['id' => 'promo', 'width' => 1280, 'height' => 320],
     ];
 }
@@ -19,7 +21,12 @@ function format(string $id): array
 
 function theme_mono(): array
 {
-    return ['base' => '#080806', 'accent' => '#e9e4d8', 'signal' => '#b9d82e', 'alert' => '#d5472b'];
+    return ['base' => '#080806', 'accent' => '#e9e4d8', 'muted' => '#c8c0b0', 'signal' => '#b9d82e', 'alert' => '#d5472b'];
+}
+
+function theme_product(): array
+{
+    return ['base' => '#ffffff', 'accent' => '#111111', 'muted' => '#6a6a6a', 'signal' => '#e6c200', 'alert' => '#d5472b'];
 }
 
 function crisp(float $value): float
@@ -193,7 +200,7 @@ function ticker(int $width): string
 function card(array $options): array
 {
     $format = format((string) ($options['format'] ?? 'article'));
-    $theme = theme_mono();
+    $theme = ($format['id'] ?? '') === 'product' ? theme_product() : theme_mono();
     $layout = layout($format);
     $w = $layout['width'];
     $h = $layout['height'];

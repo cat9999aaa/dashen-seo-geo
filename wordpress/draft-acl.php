@@ -98,6 +98,10 @@ function draft_acl_seo_preresolve($args, int $viewer_id, bool $can_manage): ?arr
     if (!is_array($args) || (string) ($args['pageType'] ?? '') !== 'single') {
         return null;
     }
+    // A profile ID identifies a user, never a post with the same numeric ID.
+    if (is_array($args) && (string) ($args['postType'] ?? '') === 'profile') {
+        return null;
+    }
     $id = (int) ($args['id'] ?? 0);
     if ($id <= 0) {
         return null;
@@ -147,6 +151,10 @@ function guard_graphql_pre_resolve($nil, $source = null, $args = null, $context 
 function guard_unpublished_seo_result($result, $args = null)
 {
     if (!is_array($result) || (int) ($result['statusCode'] ?? 0) === 404) {
+        return $result;
+    }
+    // A profile ID identifies a user, never a post with the same numeric ID.
+    if (is_array($args) && (string) ($args['postType'] ?? '') === 'profile') {
         return $result;
     }
     $id = (int) ($result['single']['databaseId'] ?? 0);

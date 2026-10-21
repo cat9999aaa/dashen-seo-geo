@@ -1,0 +1,53 @@
+name: Verify
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  javascript:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm test
+      - run: node tests/avatar-alternatives.mjs
+      - name: Compile owned Vue components
+        run: |
+          node --input-type=module <<'JS'
+          import {readFile} from 'node:fs/promises';
+          import {parse,compileScript} from '@vue/compiler-sfc';
+          for (const filename of ['src/SeoHead.vue','src/AccessibleImage.vue','src/AccessibleAvatar.vue']) {
+            const {descriptor,errors}=parse(await readFile(filename,'utf8'),{filename});
+            if(errors.length)throw errors[0];
+            compileScript(descriptor,{id:filename,inlineTemplate:true});
+            console.log('PASS compile',filename);
+          }
+          JS
+  php:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: WordPress token processor matching production version
+        uses: actions/checkout@v4
+        with:
+          repository: WordPress/WordPress
+          ref: '7.1.3'
+          path: .ci-wordpress
+          sparse-checkout: |
+            wp-includes/html-api
+            wp-includes/class-wp-token-map.php
+          sparse-checkout-cone-mode: false
+      - name: PHP dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y php8.3-imagick php8.3-mbstring php8.3-xml
+          php -r 'if (!extension_loaded("imagick") || !extension_loaded("mbstring")) exit(1);'
+      - name: Lint and isolated behavior regressions
+        env:
+          WP_TEST_ROOT: ${{ github.workspace }}/.ci-wordpress
+        run: |
+          find wordpress tests -name '*.php' -print0 | xargs -0 -n1 php -l
+          for f in tests/draft-acl.php tests/eva-api.php tests/eva-comfy.php tests/eva-cover.php tests/eva-svg.php tests/image-alt.php tests/indexnow.php tests/seo-audit.php tests/seo-metadata.php tests/test.php; do php "$f"; done
