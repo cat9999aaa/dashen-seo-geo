@@ -1,0 +1,2 @@
+{"case": "post-rename-fsync-failure", "error": "fixture directory fsync failure after atomic replacement", "actual_candidate_left_on_disk": true, "restart_or_rollback_commands": [], "automatic_rollback_record": false}
+{"case": "rollback-restart-retry", "errors": ["fixture transient systemctl failure", "live bundle drift"], "restored_bytes_on_disk": true, "actual_restart_attempts": 1, "second_retry_never_reaches_restart": true}

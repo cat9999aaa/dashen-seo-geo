@@ -1,10 +1,16 @@
-# Sitemap base-field order proposal (not deployed)
+# Sitemap base-field order: repaired expression and maintenance archive
 
-Owner: existing `plugin_dashen_seo_geo`. Separate worktree/branch from reciprocal-language, fallback and lastmod semantics. No runtime plugin version change, ZIP build, production write, service/cache mutation, Chrome/CF action or GSC submission.
+Owner: existing `plugin_dashen_seo_geo`. The source proposal was reviewed as commit76c1982, then root actually deployed the narrow native repair on2026-10-22. This branch now archives that expression, the authoritative operational installer, six fault regressions and redacted root receipts. The archive work did not run production/browser commands or change plugin versions/fixed ZIPs. Reciprocal-language, fallback and lastmod semantics remain separate.
 
-## Authoritative production input
+## Actual root rollout receipt
 
-Read-only targeted extraction from current production2.9.61 plain Node bundle:
+Root's new native bundle SHA256 is `1076fe49f7f054e6477c594ff1d19a0f5eec5c50ab7b56e3cfe3a3b29183d380`; plugin generation remained168. Normal-TLS designated-origin GETs for52 children+index+static pages returned54×200 and54 XSD passes. All53 outputs covered by the exact pre-release renderer replay match the live receipt's SHA and byte length; static pages is an additional unchanged control.
+
+See [operational handoff](sitemap-order-release-runbook.md) and `docs/evidence/sitemap-order-release-20261022/`. These are root's actual execution receipts, independently compared during archive; no repeated live probe was performed by the archive task. Google sitemap processing success is still unproven.
+
+## Authoritative pre-repair input
+
+Read-only targeted extraction from the pre-repair production2.9.61 plain Node bundle:
 
 - `/srv/dashen/node/current/server/chunks/_/nitro.mjs`
 - Bundle SHA256 `c2645bdedb260e1df2ad2ef386ba42bf7d8ed31dc32218ecf007ab25c5fc6782`
@@ -52,9 +58,11 @@ Existing fallback proposal is not included. The frozen sample has3 taxonomy rows
 
 Existing reciprocal/derived-lastmod projection remains unregistered. Its CLI prePage100 call is correctly named, but direct Sitemap class initialization produced142 groups across43 article children, while actual HTTP exposes42×100+65 articles. Public Node HTTP code also sets native route/UA/lang/currency/IP headers and goes through GraphQL initialization, unlike the direct CLI probe. The exact initialization difference remains unproven; no full-data or missing-article inference is based on CLI142. No new CLI walk or PHP resolver attachment is performed here.
 
-## Root review / production gate
+## Maintenance and future deployment gate
 
-This is a source patch proposal, not an active plugin hook or deployment tool. Root must retain the current complete Node code package and rollback artifact, check exact current bundle SHA, and stage only this expression against the actual2.9.61 baseline. Do not replace production with a different retained source tree. Any compiled-bundle application needs exact one-match/old-SHA guards, whole-file before/after review and preservation of existing host fixes; those production actions have not been performed here.
+The source patch is not a runtime plugin hook. `ops/sitemap-order-release.py` is now the authoritative, explicitly invoked operational installer. Root used its repaired recovery boundary for this rollout; the six executable fault tests reproduce post-rename fsync recovery, retryable rollback restart, foreign-byte refusal, config drift, health rollback and successful apply/verify/rollback. The original two Important failures and repaired green outputs are retained separately.
+
+The tool is intentionally pinned to the original c264 bundle: fresh prepare against the already repaired1076 bundle is refused. Existing verify/rollback uses the retained private original release context, which is not copied into Git. Keep the full code backup excluding live.data, before/after files and original option hashes in root's private release directory. The cooperative lock assumes root is the only assignment/Node release writer; it is not arbitrary-writer CAS. Any future host version or different patch needs a separately reviewed profile and fresh evidence, not relaxed guards.
 
 **The standard defect is confirmed; Google sitemap failure causality is not.** The unchanged index/static maps already pass XSD yet GSC reports inability to fetch them too. Google processing, automatic crawler/edge evidence and actual Sitemaps Success/discovery remain independent acceptance. Do not announce GSC resolution from this patch, XML200 or live InspectionTool alone.
 

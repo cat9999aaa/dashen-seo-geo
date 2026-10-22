@@ -1,0 +1,2 @@
+{"case": "post-rename-fsync-failure", "error": "fixture directory fsync failure after atomic replacement", "actual_candidate_left_on_disk": false, "restart_or_rollback_commands": [["systemctl", "restart", "dashen-node.service"]], "automatic_rollback_record": true}
+{"case": "rollback-restart-retry", "errors": ["fixture transient systemctl failure", "fixture transient systemctl failure"], "restored_bytes_on_disk": true, "actual_restart_attempts": 2, "second_retry_never_reaches_restart": false}

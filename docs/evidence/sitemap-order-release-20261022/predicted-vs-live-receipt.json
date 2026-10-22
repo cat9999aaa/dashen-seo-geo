@@ -1,0 +1,7 @@
+{
+  "scope": "Compare archived root live receipts to pre-release exact renderer replay; no network or production execution",
+  "predicted_outputs": 53,
+  "actual_receipt_outputs": 54,
+  "sha_or_size_mismatches": [],
+  "separate_static_pages_control": true
+}
