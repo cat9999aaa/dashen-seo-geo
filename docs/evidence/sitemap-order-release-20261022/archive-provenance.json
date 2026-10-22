@@ -1,0 +1,42 @@
+{
+  "archived_utc": "2026-10-22T00:54:28.603849+00:00",
+  "owner": "plugin_dashen_seo_geo",
+  "observation_authority": "Parent/root actual deployment receipts; archive task did not execute production or browser operations",
+  "installer_sha256": "1c0ecdf959c804edc825e946cc08de8f5887782820db9a71d04529b747a0eaa0",
+  "fault_test_sha256": "c153c4a6f1ded3241d93999e40017b0850b5d269202a65ec8100f8ccc3d15309",
+  "source_copy_byte_identical": true,
+  "production_bundle_before": "c2645bdedb260e1df2ad2ef386ba42bf7d8ed31dc32218ecf007ab25c5fc6782",
+  "production_bundle_after": "1076fe49f7f054e6477c594ff1d19a0f5eec5c50ab7b56e3cfe3a3b29183d380",
+  "frontend_generation": 168,
+  "source_receipts": {
+    "prepare.json": {
+      "project_source": "docs/evidence/noon-hardening-20261022/sitemap-order-prepare.json",
+      "sha256": "8fe0576d5e9f99009184949fdd221e927482c6e9cf208c8ccb31fe22b104172b"
+    },
+    "apply.json": {
+      "project_source": "docs/evidence/noon-hardening-20261022/sitemap-order-apply.json",
+      "sha256": "6a622c509156141696ede3b792ed70a1f761942263f9084682f14fd901540a5c"
+    },
+    "verify.json": {
+      "project_source": "docs/evidence/noon-hardening-20261022/sitemap-order-verify.json",
+      "sha256": "cae9e3933e3821bd487ba52c9e6edc69572becbc6ada58d6a5a8e5eb050de399"
+    },
+    "live-origin-receipt.json": {
+      "project_source": "docs/evidence/noon-hardening-20261022/sitemap-live-origin/receipt.json",
+      "sha256": "4dd8fc79c43b06b5a5e689d01e5242fae83d5e53cca78f161c1d4e8296de9b89"
+    },
+    "installer-original-red.txt": {
+      "project_source": "docs/evidence/sitemap-ordering-candidate-20261022/installer-root-red.txt",
+      "sha256": "32e95abf29c2c4cf06700e82341ab814af12a1c9124799e21626e1b3b9429926"
+    },
+    "installer-repaired-green.txt": {
+      "project_source": "docs/evidence/sitemap-ordering-candidate-20261022/installer-root-green.txt",
+      "sha256": "ca795194ab006316f3b2ae40e9603ceaf8311c3ef34193e7831166cc6416f526"
+    },
+    "installer-original-six-tests-green.txt": {
+      "project_source": "docs/evidence/sitemap-ordering-candidate-20261022/installer-root-tests-green.txt",
+      "sha256": "66fa5f30951bf7200c7067e53e73137402821f51be5c8799663a6a9e482fe9f5"
+    }
+  },
+  "vendor_bundle_or_private_backups_committed": false
+}

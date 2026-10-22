@@ -26,6 +26,17 @@ jobs:
             console.log('PASS compile',filename);
           }
           JS
+  sitemap_operations:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: CLI help without production access
+        run: python ops/sitemap-order-release.py --help
+      - name: Six isolated release fault regressions
+        run: python -m unittest discover -s ops/tests -p 'test_*.py' -v
   php:
     runs-on: ubuntu-24.04
     steps:

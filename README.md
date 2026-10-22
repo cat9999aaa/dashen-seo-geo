@@ -1,6 +1,6 @@
 # 大神 Seo geo 运行时插件
 
-当前候选版本 0.2.12（生产仍为 0.2.10；0.2.11 因缺少原生 action 声明未激活）。归属大神网，源码位于本目录；生产通过瓜奇运行时插件 ZIP 安装和为 `dashen.wang` 单独启用。安装包也放在 GitHub Release：<https://github.com/cat9999aaa/dashen-seo-geo>。
+插件发布源码版本为 0.2.12。0.2.11 曾因缺少原生 action 声明被原生激活流程拒绝；实际线上版本与验收以部署收据为准。归属大神网，源码位于本目录；生产通过瓜奇运行时插件 ZIP 安装和为 `dashen.wang` 单独启用。安装包也放在 GitHub Release：<https://github.com/cat9999aaa/dashen-seo-geo>。
 
 ## 功能
 
@@ -23,3 +23,7 @@
 `tests/test.php` 是 PHP+Imagick 隔离测试；`tests/seo-audit.php` 检查文章发布审计；`tests/eva-svg.php` 检查本地栅格尺寸与字体；`tests/eva-api.php` 检查 HTTP 封面客户端；`tests/eva-cover.php` 检查发布排队与保护附件；`tests/draft-acl.php` 检查草稿 ACL。生产安装包在 `dist/`，ZIP 根目录含 `manifest.json`。
 
 修改后先完成测试、递增版本，再通过瓜奇插件管理的 ZIP 安装与同步流程更新。不要直接修改瓜奇本体或生产已安装包。运行必需的 Eva-Ming OTF 在 `wordpress/assets/fonts/`，官方 `runtime-plugin.mjs build` 会打进 ZIP。源码树里 `assets/fonts/` 仍作备份，生产路径优先 `wordpress/assets/fonts/`。
+
+## Native sitemap operational maintenance
+
+The separately reviewed host XML field-order repair is maintained under `ops/sitemap-order-release.py`, with six isolated fault tests and redacted root deployment receipts. It is not part of the plugin ZIP build. See [operational paths and CLI compatibility](docs/sitemap-order-release-runbook.md) and [ordering evidence](docs/sitemap-ordering-proposal-20261022.md).

@@ -1,0 +1,11 @@
+test_configuration_drift_stops_before_mutation (test_sitemap_order_release.ReleaseTests.test_configuration_drift_stops_before_mutation) ... ok
+test_foreign_bundle_is_never_overwritten_or_restarted (test_sitemap_order_release.ReleaseTests.test_foreign_bundle_is_never_overwritten_or_restarted) ... ok
+test_health_failure_rolls_back_after_mutation (test_sitemap_order_release.ReleaseTests.test_health_failure_rolls_back_after_mutation) ... ok
+test_post_rename_directory_sync_failure_restores_and_restarts (test_sitemap_order_release.ReleaseTests.test_post_rename_directory_sync_failure_restores_and_restarts) ... ok
+test_rollback_transient_restart_is_retryable_with_append_only_evidence (test_sitemap_order_release.ReleaseTests.test_rollback_transient_restart_is_retryable_with_append_only_evidence) ... ok
+test_successful_apply_verify_and_explicit_rollback (test_sitemap_order_release.ReleaseTests.test_successful_apply_verify_and_explicit_rollback) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.015s
+
+OK
