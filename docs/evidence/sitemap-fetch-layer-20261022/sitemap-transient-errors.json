@@ -1,0 +1,48 @@
+{
+  "observedUTC": "2026-10-22T05:35:57.813653+00:00",
+  "source": "Read-only nginx dashen-crawler.log and error.log, aggregated from SSH stdout; query/path/IP removed",
+  "windowStartUTC": "2026-10-21T05:00:00Z",
+  "map5xx": [
+    {
+      "utc": "2026-10-22T00:46:13Z",
+      "path": "/sitemap-posts-post-1.xml",
+      "status": 502,
+      "upstreamStatus": 502,
+      "mechanism": "connect() failed",
+      "verifiedGoogle": false
+    },
+    {
+      "utc": "2026-10-22T00:46:14Z",
+      "path": "/sitemap-posts-post-1.xml",
+      "status": 502,
+      "upstreamStatus": 502,
+      "mechanism": "connect() failed",
+      "verifiedGoogle": false
+    },
+    {
+      "utc": "2026-10-22T01:24:01Z",
+      "path": "/sitemap-posts-post-1.xml",
+      "status": 502,
+      "upstreamStatus": 502,
+      "mechanism": "connect() failed",
+      "verifiedGoogle": false
+    },
+    {
+      "utc": "2026-10-22T01:24:02Z",
+      "path": "/sitemap-posts-post-1.xml",
+      "status": 502,
+      "upstreamStatus": 502,
+      "mechanism": "connect() failed",
+      "verifiedGoogle": false
+    },
+    {
+      "utc": "2026-10-22T01:24:03Z",
+      "path": "/sitemap-posts-post-1.xml",
+      "status": 502,
+      "upstreamStatus": 502,
+      "mechanism": "connect() failed",
+      "verifiedGoogle": false
+    }
+  ],
+  "note": "No FCrDNS-verified Google map/robots request had a 5xx in the 24h collector. These transient origin failures cannot explain why the exact index failed after resubmission with zero automatic index arrivals."
+}

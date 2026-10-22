@@ -1,0 +1,27 @@
+{
+  "actualConfigBeforeSHA256": "8bf9cd76c7e42ef968e88903749aba86373f66629d57ba2073b4bb31213afc3c",
+  "actualConfigAfterSHA256": "ddef81388771687f75b1774e0e24dbd9b89010d4c307ff1d01ea4dee0e102537",
+  "sourceConfigFiles": 16,
+  "nginxVersion": "1.24.0 (Ubuntu)",
+  "fullBeforeAndAfterNginxT": "PASS",
+  "originalAliases301": 12,
+  "candidateAliases200AndCanonicalBytesEqual": 12,
+  "queryForwardingAssertions": 6,
+  "negativeRouteHostEquality": 10,
+  "canonicalAndRobotsControlEquality": 4,
+  "configurationFixtureAdaptations": [
+    "TLS key/cert paths replaced with isolated self-signed fixture",
+    "additional localhost3000 static public-XML backend; no Node/PHP/DB",
+    "public sitemap-pages/robots alias files mounted only in fixture"
+  ],
+  "isolation": "new owned network-none container, no host port, finally removed",
+  "originalPrivateConfigNotInGit": true,
+  "productionApplied": false,
+  "finalVerificationUTC": "2026-10-22T05:51:30.013955+00:00",
+  "finalDetailedEvidence": [
+    "nginx-before-ten-red.json",
+    "nginx-after-ten-green.json"
+  ],
+  "firstRunEvidenceNote": "Initial 8-negative summary retained separately; detailed before/after JSON paths were reused by the expanded rerun before root requested preservation. No original 8-row detailed JSON is claimed retained.",
+  "pureTests": "10/10 (4 new alias plan + 6 existing sitemap installer fault tests)"
+}

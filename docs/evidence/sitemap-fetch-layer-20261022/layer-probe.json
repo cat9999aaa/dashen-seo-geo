@@ -1,0 +1,105 @@
+{
+  "atUTC": "2026-10-22T05:35:20.304344+00:00",
+  "requests": [
+    {
+      "path": "/sitemap-index.xml",
+      "layer": "edge",
+      "exit": 0,
+      "status": 200,
+      "protocol": "2",
+      "verify": 0,
+      "ttfb": 1.148154,
+      "totalSeconds": 1.14825,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8",
+        "server": "cloudflare",
+        "vary": "Accept-Encoding",
+        "cache-control": "private, no-store",
+        "content-encoding": "gzip",
+        "cf-cache-status": "DYNAMIC",
+        "cf-ray": "a4e62348b9600f68-EWR"
+      },
+      "wireBytes": 878,
+      "decodedBytes": 9983,
+      "gzipDecodedCRCValid": true,
+      "decodedSHA256": "cbc86935aee4e3dc11a873e088d286e73f60f1905ecc2a3396b07c6d53f15ac9",
+      "isXML": true
+    },
+    {
+      "path": "/sitemap-index.xml",
+      "layer": "origin",
+      "exit": 0,
+      "status": 200,
+      "protocol": "1.1",
+      "verify": 0,
+      "ttfb": 1.185117,
+      "totalSeconds": 1.185201,
+      "headers": {
+        "server": "nginx/1.24.0 (Ubuntu)",
+        "content-type": "application/xml; charset=utf-8",
+        "transfer-encoding": "chunked",
+        "vary": "Accept-Encoding",
+        "cache-control": "private, no-store",
+        "content-encoding": "gzip"
+      },
+      "wireBytes": 878,
+      "decodedBytes": 9983,
+      "gzipDecodedCRCValid": true,
+      "decodedSHA256": "cbc86935aee4e3dc11a873e088d286e73f60f1905ecc2a3396b07c6d53f15ac9",
+      "isXML": true
+    },
+    {
+      "path": "/robots.txt",
+      "layer": "edge",
+      "exit": 0,
+      "status": 200,
+      "protocol": "2",
+      "verify": 0,
+      "ttfb": 0.059511,
+      "totalSeconds": 0.059851,
+      "headers": {
+        "content-type": "text/plain",
+        "server": "cloudflare",
+        "last-modified": "Mon, 05 Oct 2026 04:49:29 GMT",
+        "vary": "Accept-Encoding",
+        "etag": "W/\"6ac32c59-76\"",
+        "content-encoding": "gzip",
+        "cache-control": "max-age=14400",
+        "cf-cache-status": "MISS",
+        "cf-ray": "a4e623577b3a069b-EWR"
+      },
+      "wireBytes": 94,
+      "decodedBytes": 118,
+      "gzipDecodedCRCValid": true,
+      "decodedSHA256": "037a6129c07c1f0fb7d405dac333c5727540850ec62642b0653e4c80218e8912",
+      "isXML": false,
+      "robotsText": "User-agent: *\nAllow: /\n\nSitemap: https://dashen.wang/sitemap-index.xml\nSitemap: https://dashen.wang/sitemap-pages.xml\n"
+    },
+    {
+      "path": "/robots.txt",
+      "layer": "origin",
+      "exit": 0,
+      "status": 200,
+      "protocol": "1.1",
+      "verify": 0,
+      "ttfb": 0.024582,
+      "totalSeconds": 0.024632,
+      "headers": {
+        "server": "nginx/1.24.0 (Ubuntu)",
+        "content-type": "text/plain",
+        "last-modified": "Mon, 05 Oct 2026 04:49:29 GMT",
+        "transfer-encoding": "chunked",
+        "vary": "Accept-Encoding",
+        "etag": "W/\"6ac32c59-76\"",
+        "content-encoding": "gzip"
+      },
+      "wireBytes": 94,
+      "decodedBytes": 118,
+      "gzipDecodedCRCValid": true,
+      "decodedSHA256": "037a6129c07c1f0fb7d405dac333c5727540850ec62642b0653e4c80218e8912",
+      "isXML": false,
+      "robotsText": "User-agent: *\nAllow: /\n\nSitemap: https://dashen.wang/sitemap-index.xml\nSitemap: https://dashen.wang/sitemap-pages.xml\n"
+    }
+  ],
+  "identity": "Explicit diagnostic UA, never represented as real Google requests."
+}
