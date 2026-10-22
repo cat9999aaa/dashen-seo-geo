@@ -10,3 +10,9 @@ test('public SEO action validates route before compiling a read-only query', () 
     assert.throws(()=>run({path}), /Invalid public article path/);
   }
 });
+
+test('release manifest authorizes exactly the server action exported by this package', async () => {
+  const {readFile}=await import('node:fs/promises');
+  const manifest=JSON.parse(await readFile(new URL('../manifest.json',import.meta.url),'utf8'));
+  assert.deepEqual(manifest.actions,Object.keys(registration.actions));
+});

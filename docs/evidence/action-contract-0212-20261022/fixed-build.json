@@ -1,0 +1,59 @@
+{
+  "zip": "/mnt/workspace/01-业务与产品项目/大神网/.worktrees/seo-release-0212-20261022/dist/dashen-seo-geo-0.2.12.zip",
+  "sha256": "76640041e227f817ee613c06183d32cbed56601007bae2fa1ecc42c08c638812",
+  "bytes": 21692010,
+  "mode": "0o600",
+  "build_count": 1,
+  "sdk_script_sha256": "c158bc742d5f50f8dd1c5b407a599cc0720a299210cbe371f68806d99d7c0705",
+  "manifest": {
+    "schemaVersion": 6,
+    "id": "dashen/seo-geo",
+    "name": "大神 Seo geo",
+    "description": "WebP 与 alt、文章 SEO 检查、未发布 page 拒绝，以及 eva.dashen.wang 封面",
+    "version": "0.2.12",
+    "requires": {
+      "capabilities": []
+    },
+    "wordpressEntry": "wordpress/plugin.php",
+    "serverEntry": "node/server/index.mjs",
+    "clientComponents": {
+      "components/CommonCustomCode": {
+        "entry": "node/client/components/0/index.js",
+        "styles": []
+      },
+      "components/Image": {
+        "entry": "node/client/components/1/index.js",
+        "styles": [
+          "node/client/components/1/style.css"
+        ]
+      },
+      "components/CommonAvatar": {
+        "entry": "node/client/components/2/index.js",
+        "styles": []
+      }
+    },
+    "i18n": {},
+    "modules": [],
+    "replacements": [],
+    "componentReplacements": [
+      {
+        "target": "components/CommonCustomCode",
+        "moduleTypes": []
+      },
+      {
+        "target": "components/Image",
+        "moduleTypes": []
+      },
+      {
+        "target": "components/CommonAvatar",
+        "moduleTypes": []
+      }
+    ],
+    "layoutVariants": [],
+    "formExtensions": [],
+    "pages": [],
+    "actions": [
+      "plugin.dashen.seo.head"
+    ]
+  }
+}

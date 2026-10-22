@@ -3,7 +3,7 @@
   "id": "dashen/seo-geo",
   "name": "大神 Seo geo",
   "description": "WebP 与 alt、文章 SEO 检查、未发布 page 拒绝，以及 eva.dashen.wang 封面",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "wordpressEntry": "wordpress/plugin.php",
   "serverEntry": "node/server/index.mjs",
   "clientComponents": {},
@@ -21,5 +21,8 @@
       "target": "components/CommonAvatar",
       "component": "src/AccessibleAvatar.vue"
     }
+  ],
+  "actions": [
+    "plugin.dashen.seo.head"
   ]
 }

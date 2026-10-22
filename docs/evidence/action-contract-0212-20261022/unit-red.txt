@@ -1,0 +1,42 @@
+
+> test
+> node --test tests/*.test.mjs
+
+✔ public SEO action validates route before compiling a read-only query (1.176051ms)
+✖ release manifest authorizes exactly the server action exported by this package (7.542711ms)
+✔ head repair supplies reciprocal published languages and resolvable schema entities (2.334843ms)
+✔ localized home uses itself without adding fabricated language equivalents (0.227399ms)
+✔ stale metadata, foreign hosts, untrusted URLs and unrelated custom JSON are preserved safely (0.257146ms)
+✔ native relative FAQ entities are normalized before checking article references (0.230878ms)
+✔ publisher ID is opaque and does not permit rewriting a Person named UME (0.235338ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 6
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 70.642948
+
+✖ failing tests:
+
+test at tests/seo-head.test.mjs:14:1
+✖ release manifest authorizes exactly the server action exported by this package (7.542711ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + undefined
+  - [
+  -   'plugin.dashen.seo.head'
+  - ]
+  
+      at TestContext.<anonymous> (file:///mnt/workspace/01-%E4%B8%9A%E5%8A%A1%E4%B8%8E%E4%BA%A7%E5%93%81%E9%A1%B9%E7%9B%AE/%E5%A4%A7%E7%A5%9E%E7%BD%91/.worktrees/seo-release-0212-20261022/tests/seo-head.test.mjs:17:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: [ 'plugin.dashen.seo.head' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
