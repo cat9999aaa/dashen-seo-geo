@@ -1,0 +1,16 @@
+{
+  "beforeSHA256": "8bf9cd76c7e42ef968e88903749aba86373f66629d57ba2073b4bb31213afc3c",
+  "afterSHA256": "ddef81388771687f75b1774e0e24dbd9b89010d4c307ff1d01ea4dee0e102537",
+  "aliasCount": 6,
+  "scope": "existing exact alias locations inside HTTPS dashen.wang only",
+  "aliases": {
+    "/sitemap.xml": "/sitemap-index.xml",
+    "/wp-sitemap.xml": "/sitemap-index.xml",
+    "/post-sitemap.xml": "/sitemap-index.xml",
+    "/wp-sitemap-posts-post-1.xml": "/sitemap-posts-post-1.xml",
+    "/wp-sitemap-posts-post-2.xml": "/sitemap-posts-post-2.xml",
+    "/wp-sitemap-posts-post-3.xml": "/sitemap-posts-post-3.xml"
+  },
+  "newLocations": 0,
+  "mode": "local plan only; no production writes/reload"
+}

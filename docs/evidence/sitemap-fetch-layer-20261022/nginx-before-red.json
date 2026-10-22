@@ -1,0 +1,329 @@
+{
+  "nginxVersion": "1.24.0 (Ubuntu)",
+  "nginxConfigTest": "PASS",
+  "isolation": {
+    "network": "none",
+    "hostPorts": false,
+    "tlsFixtureOnly": true,
+    "canonicalBackend": "public XML fixture, no Node/PHP/database"
+  },
+  "aliasRequests": [
+    {
+      "status": 301,
+      "sha256": "7cb59ce037656d9a4e8ee9194bc31dfc540cbc8fd5b19c64439a89631cde3715",
+      "bytes": 178,
+      "headers": {
+        "content-type": "text/html",
+        "location": "https://dashen.wang/sitemap-index.xml"
+      },
+      "host": "dashen.wang",
+      "path": "/sitemap.xml",
+      "target": "/sitemap-index.xml",
+      "matchesCanonicalBytes": false,
+      "expectedSHA256": "cbc86935aee4e3dc11a873e088d286e73f60f1905ecc2a3396b07c6d53f15ac9"
+    },
+    {
+      "status": 301,
+      "sha256": "7cb59ce037656d9a4e8ee9194bc31dfc540cbc8fd5b19c64439a89631cde3715",
+      "bytes": 178,
+      "headers": {
+        "content-type": "text/html",
+        "location": "https://dashen.wang/sitemap-index.xml"
+      },
+      "host": "dashen.wang",
+      "path": "/sitemap.xml?v=1&next=%2Fprivate%3Fx%3D1",
+      "target": "/sitemap-index.xml",
+      "matchesCanonicalBytes": false,
+      "expectedSHA256": "cbc86935aee4e3dc11a873e088d286e73f60f1905ecc2a3396b07c6d53f15ac9"
+    },
+    {
+      "status": 301,
+      "sha256": "7cb59ce037656d9a4e8ee9194bc31dfc540cbc8fd5b19c64439a89631cde3715",
+      "bytes": 178,
+      "headers": {
+        "content-type": "text/html",
+        "location": "https://dashen.wang/sitemap-index.xml"
+      },
+      "host": "dashen.wang",
+      "path": "/wp-sitemap.xml",
+      "target": "/sitemap-index.xml",
+      "matchesCanonicalBytes": false,
+      "expectedSHA256": "cbc86935aee4e3dc11a873e088d286e73f60f1905ecc2a3396b07c6d53f15ac9"
+    },
+    {
+      "status": 301,
+      "sha256": "7cb59ce037656d9a4e8ee9194bc31dfc540cbc8fd5b19c64439a89631cde3715",
+      "bytes": 178,
+      "headers": {
+        "content-type": "text/html",
+        "location": "https://dashen.wang/sitemap-index.xml"
+      },
+      "host": "dashen.wang",
+      "path": "/wp-sitemap.xml?v=1&next=%2Fprivate%3Fx%3D1",
+      "target": "/sitemap-index.xml",
+      "matchesCanonicalBytes": false,
+      "expectedSHA256": "cbc86935aee4e3dc11a873e088d286e73f60f1905ecc2a3396b07c6d53f15ac9"
+    },
+    {
+      "status": 301,
+      "sha256": "7cb59ce037656d9a4e8ee9194bc31dfc540cbc8fd5b19c64439a89631cde3715",
+      "bytes": 178,
+      "headers": {
+        "content-type": "text/html",
+        "location": "https://dashen.wang/sitemap-index.xml"
+      },
+      "host": "dashen.wang",
+      "path": "/post-sitemap.xml",
+      "target": "/sitemap-index.xml",
+      "matchesCanonicalBytes": false,
+      "expectedSHA256": "cbc86935aee4e3dc11a873e088d286e73f60f1905ecc2a3396b07c6d53f15ac9"
+    },
+    {
+      "status": 301,
+      "sha256": "7cb59ce037656d9a4e8ee9194bc31dfc540cbc8fd5b19c64439a89631cde3715",
+      "bytes": 178,
+      "headers": {
+        "content-type": "text/html",
+        "location": "https://dashen.wang/sitemap-index.xml"
+      },
+      "host": "dashen.wang",
+      "path": "/post-sitemap.xml?v=1&next=%2Fprivate%3Fx%3D1",
+      "target": "/sitemap-index.xml",
+      "matchesCanonicalBytes": false,
+      "expectedSHA256": "cbc86935aee4e3dc11a873e088d286e73f60f1905ecc2a3396b07c6d53f15ac9"
+    },
+    {
+      "status": 301,
+      "sha256": "7cb59ce037656d9a4e8ee9194bc31dfc540cbc8fd5b19c64439a89631cde3715",
+      "bytes": 178,
+      "headers": {
+        "content-type": "text/html",
+        "location": "https://dashen.wang/sitemap-posts-post-1.xml"
+      },
+      "host": "dashen.wang",
+      "path": "/wp-sitemap-posts-post-1.xml",
+      "target": "/sitemap-posts-post-1.xml",
+      "matchesCanonicalBytes": false,
+      "expectedSHA256": "9db5e5ccd685b01346fa5c4b28350a7562c52c6624e1d6d76386be6da2792c90"
+    },
+    {
+      "status": 301,
+      "sha256": "7cb59ce037656d9a4e8ee9194bc31dfc540cbc8fd5b19c64439a89631cde3715",
+      "bytes": 178,
+      "headers": {
+        "content-type": "text/html",
+        "location": "https://dashen.wang/sitemap-posts-post-1.xml"
+      },
+      "host": "dashen.wang",
+      "path": "/wp-sitemap-posts-post-1.xml?v=1&next=%2Fprivate%3Fx%3D1",
+      "target": "/sitemap-posts-post-1.xml",
+      "matchesCanonicalBytes": false,
+      "expectedSHA256": "9db5e5ccd685b01346fa5c4b28350a7562c52c6624e1d6d76386be6da2792c90"
+    },
+    {
+      "status": 301,
+      "sha256": "7cb59ce037656d9a4e8ee9194bc31dfc540cbc8fd5b19c64439a89631cde3715",
+      "bytes": 178,
+      "headers": {
+        "content-type": "text/html",
+        "location": "https://dashen.wang/sitemap-posts-post-2.xml"
+      },
+      "host": "dashen.wang",
+      "path": "/wp-sitemap-posts-post-2.xml",
+      "target": "/sitemap-posts-post-2.xml",
+      "matchesCanonicalBytes": false,
+      "expectedSHA256": "74b578f1cc84da32fcd4d554c5365582746a1c415c3ca4ceba5ce2235b7a60f4"
+    },
+    {
+      "status": 301,
+      "sha256": "7cb59ce037656d9a4e8ee9194bc31dfc540cbc8fd5b19c64439a89631cde3715",
+      "bytes": 178,
+      "headers": {
+        "content-type": "text/html",
+        "location": "https://dashen.wang/sitemap-posts-post-2.xml"
+      },
+      "host": "dashen.wang",
+      "path": "/wp-sitemap-posts-post-2.xml?v=1&next=%2Fprivate%3Fx%3D1",
+      "target": "/sitemap-posts-post-2.xml",
+      "matchesCanonicalBytes": false,
+      "expectedSHA256": "74b578f1cc84da32fcd4d554c5365582746a1c415c3ca4ceba5ce2235b7a60f4"
+    },
+    {
+      "status": 301,
+      "sha256": "7cb59ce037656d9a4e8ee9194bc31dfc540cbc8fd5b19c64439a89631cde3715",
+      "bytes": 178,
+      "headers": {
+        "content-type": "text/html",
+        "location": "https://dashen.wang/sitemap-posts-post-3.xml"
+      },
+      "host": "dashen.wang",
+      "path": "/wp-sitemap-posts-post-3.xml",
+      "target": "/sitemap-posts-post-3.xml",
+      "matchesCanonicalBytes": false,
+      "expectedSHA256": "138a751ce1ac55085802c7578363022431a11ab0b9496d3bd885ce014ef66052"
+    },
+    {
+      "status": 301,
+      "sha256": "7cb59ce037656d9a4e8ee9194bc31dfc540cbc8fd5b19c64439a89631cde3715",
+      "bytes": 178,
+      "headers": {
+        "content-type": "text/html",
+        "location": "https://dashen.wang/sitemap-posts-post-3.xml"
+      },
+      "host": "dashen.wang",
+      "path": "/wp-sitemap-posts-post-3.xml?v=1&next=%2Fprivate%3Fx%3D1",
+      "target": "/sitemap-posts-post-3.xml",
+      "matchesCanonicalBytes": false,
+      "expectedSHA256": "138a751ce1ac55085802c7578363022431a11ab0b9496d3bd885ce014ef66052"
+    }
+  ],
+  "negativeRequests": [
+    {
+      "status": 404,
+      "sha256": "766c1d6bcb81d3e983fb7adbc19c616d7fc01dafb7893738edc242e2adc59c07",
+      "bytes": 162,
+      "headers": {
+        "content-type": "text/html"
+      },
+      "host": "dashen.wang",
+      "path": "/sitemap.xml/extra"
+    },
+    {
+      "status": 404,
+      "sha256": "766c1d6bcb81d3e983fb7adbc19c616d7fc01dafb7893738edc242e2adc59c07",
+      "bytes": 162,
+      "headers": {
+        "content-type": "text/html"
+      },
+      "host": "dashen.wang",
+      "path": "/sitemap.xmlx"
+    },
+    {
+      "status": 404,
+      "sha256": "766c1d6bcb81d3e983fb7adbc19c616d7fc01dafb7893738edc242e2adc59c07",
+      "bytes": 162,
+      "headers": {
+        "content-type": "text/html"
+      },
+      "host": "dashen.wang",
+      "path": "/nested/sitemap.xml"
+    },
+    {
+      "status": 404,
+      "sha256": "766c1d6bcb81d3e983fb7adbc19c616d7fc01dafb7893738edc242e2adc59c07",
+      "bytes": 162,
+      "headers": {
+        "content-type": "text/html"
+      },
+      "host": "dashen.wang",
+      "path": "/wp-sitemap-posts-post-4.xml"
+    },
+    {
+      "status": 301,
+      "sha256": "7cb59ce037656d9a4e8ee9194bc31dfc540cbc8fd5b19c64439a89631cde3715",
+      "bytes": 178,
+      "headers": {
+        "content-type": "text/html",
+        "location": "https://dashen.wang/sitemap-pages.xml"
+      },
+      "host": "dashen.wang",
+      "path": "/wp-sitemap-posts-page-1.xml"
+    },
+    {
+      "status": 301,
+      "sha256": "7cb59ce037656d9a4e8ee9194bc31dfc540cbc8fd5b19c64439a89631cde3715",
+      "bytes": 178,
+      "headers": {
+        "content-type": "text/html",
+        "location": "https://dashen.wang/sitemap-posts-post-3.xml"
+      },
+      "host": "dashen.wang",
+      "path": "/post-sitemap3.xml"
+    },
+    {
+      "status": 301,
+      "sha256": "7cb59ce037656d9a4e8ee9194bc31dfc540cbc8fd5b19c64439a89631cde3715",
+      "bytes": 178,
+      "headers": {
+        "content-type": "text/html",
+        "location": "https://dashen.wang/sitemap-index.xml"
+      },
+      "host": "dashen.wang",
+      "tls": false,
+      "path": "/sitemap.xml"
+    },
+    {
+      "status": 301,
+      "sha256": "7cb59ce037656d9a4e8ee9194bc31dfc540cbc8fd5b19c64439a89631cde3715",
+      "bytes": 178,
+      "headers": {
+        "content-type": "text/html",
+        "location": "https://dashen.wang/sitemap-index.xml"
+      },
+      "host": "www.dashen.wang",
+      "tls": true,
+      "path": "/sitemap.xml"
+    },
+    {
+      "status": 404,
+      "sha256": "766c1d6bcb81d3e983fb7adbc19c616d7fc01dafb7893738edc242e2adc59c07",
+      "bytes": 162,
+      "headers": {
+        "content-type": "text/html"
+      },
+      "host": "i.dashen.wang",
+      "tls": true,
+      "path": "/sitemap.xml"
+    },
+    {
+      "status": 403,
+      "sha256": "d0764f16f2c5cb361aff5ac0a7ffed38c3600c0f5110908129cd3daa26c6404d",
+      "bytes": 352,
+      "headers": {
+        "content-type": "text/xml"
+      },
+      "host": "pan.dashen.wang",
+      "tls": true,
+      "path": "/sitemap.xml"
+    }
+  ],
+  "controls": [
+    {
+      "status": 200,
+      "sha256": "037a6129c07c1f0fb7d405dac333c5727540850ec62642b0653e4c80218e8912",
+      "bytes": 118,
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "path": "/robots.txt"
+    },
+    {
+      "status": 200,
+      "sha256": "cbc86935aee4e3dc11a873e088d286e73f60f1905ecc2a3396b07c6d53f15ac9",
+      "bytes": 9983,
+      "headers": {
+        "content-type": "text/xml"
+      },
+      "path": "/sitemap-index.xml"
+    },
+    {
+      "status": 200,
+      "sha256": "9db5e5ccd685b01346fa5c4b28350a7562c52c6624e1d6d76386be6da2792c90",
+      "bytes": 37496,
+      "headers": {
+        "content-type": "text/xml"
+      },
+      "path": "/sitemap-posts-post-1.xml"
+    },
+    {
+      "status": 200,
+      "sha256": "2181c1e0021a50cf55ffec9dd8b9d58d93373bcf846b28e2b6ebf4f534995027",
+      "bytes": 486,
+      "headers": {
+        "content-type": "text/xml"
+      },
+      "path": "/sitemap-pages.xml"
+    }
+  ],
+  "allAliases200SameBytes": false
+}

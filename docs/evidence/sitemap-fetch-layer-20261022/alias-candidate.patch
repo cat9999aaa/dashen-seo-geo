@@ -1,0 +1,16 @@
+--- a/etc/nginx/sites-available/dashen
++++ b/etc/nginx/sites-available/dashen
+@@ -61,3 +61,3 @@
+-    location = /sitemap.xml { return 301 https://dashen.wang/sitemap-index.xml; }
+-    location = /wp-sitemap.xml { return 301 https://dashen.wang/sitemap-index.xml; }
+-    location = /post-sitemap.xml { return 301 https://dashen.wang/sitemap-index.xml; }
++    location = /sitemap.xml { rewrite ^ /sitemap-index.xml last; }
++    location = /wp-sitemap.xml { rewrite ^ /sitemap-index.xml last; }
++    location = /post-sitemap.xml { rewrite ^ /sitemap-index.xml last; }
+@@ -66,3 +66,3 @@
+-    location = /wp-sitemap-posts-post-1.xml { return 301 https://dashen.wang/sitemap-posts-post-1.xml; }
+-    location = /wp-sitemap-posts-post-2.xml { return 301 https://dashen.wang/sitemap-posts-post-2.xml; }
+-    location = /wp-sitemap-posts-post-3.xml { return 301 https://dashen.wang/sitemap-posts-post-3.xml; }
++    location = /wp-sitemap-posts-post-1.xml { rewrite ^ /sitemap-posts-post-1.xml last; }
++    location = /wp-sitemap-posts-post-2.xml { rewrite ^ /sitemap-posts-post-2.xml last; }
++    location = /wp-sitemap-posts-post-3.xml { rewrite ^ /sitemap-posts-post-3.xml last; }

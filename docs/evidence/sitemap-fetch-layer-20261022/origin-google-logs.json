@@ -1,0 +1,620 @@
+{
+  "atUTC": "2026-10-22T05:39:20.942056+00:00",
+  "startUTC": "2026-10-21T05:39:20.942056+00:00",
+  "files": [
+    {
+      "name": "dashen-crawler.log.5.gz",
+      "bytes": 16764
+    },
+    {
+      "name": "dashen-crawler.log.4.gz",
+      "bytes": 21710
+    },
+    {
+      "name": "dashen-crawler.log",
+      "bytes": 85696
+    },
+    {
+      "name": "dashen-crawler.log.2.gz",
+      "bytes": 19894
+    },
+    {
+      "name": "dashen-crawler.log.6.gz",
+      "bytes": 22305
+    },
+    {
+      "name": "dashen-crawler.log.10.gz",
+      "bytes": 18619
+    },
+    {
+      "name": "dashen-crawler.log.12.gz",
+      "bytes": 43881
+    },
+    {
+      "name": "dashen-crawler.log.11.gz",
+      "bytes": 19056
+    },
+    {
+      "name": "dashen-crawler.log.3.gz",
+      "bytes": 16933
+    },
+    {
+      "name": "dashen-crawler.log.8.gz",
+      "bytes": 14964
+    },
+    {
+      "name": "dashen-crawler.log.9.gz",
+      "bytes": 19003
+    },
+    {
+      "name": "dashen-crawler.log.7.gz",
+      "bytes": 16736
+    },
+    {
+      "name": "dashen-crawler.log.1",
+      "bytes": 199741
+    }
+  ],
+  "parseErrors": 0,
+  "dnsCandidateCount": 11,
+  "dnsVerifiedCount": 6,
+  "officialRanges": {
+    "url": "https://developers.google.com/static/crawling/ipranges/common-crawlers.json",
+    "creationTime": "2026-10-21T14:46:09.000000",
+    "sha256": "0e2965d8b989b0f8acd7c2e00d4bbec5644876b38a58ea760aa7c5ce311d659a"
+  },
+  "commonRange24hByUACategory": {
+    "Googlebot": 8,
+    "InspectionTool": 4,
+    "GoogleOther": 1
+  },
+  "verifiedGoogle24hByCategoryStatus": {
+    "Googlebot:200": 8,
+    "InspectionTool:200": 4,
+    "GoogleOther:200": 1
+  },
+  "verifiedGoogleMap24h": [
+    {
+      "time": "2026-10-22T01:32:25+00:00",
+      "category": "InspectionTool",
+      "path": "/sitemap-index.xml",
+      "status": 200,
+      "upstream": "200",
+      "bytes": 941,
+      "duration": 0.894,
+      "googleIP": "66.249.65.200",
+      "ptr": "crawl-66-249-65-200.googlebot.com",
+      "forward": [
+        "66.249.65.200"
+      ],
+      "officialCommonRange": true
+    },
+    {
+      "time": "2026-10-22T01:32:25+00:00",
+      "category": "InspectionTool",
+      "path": "/sitemap-index.xml",
+      "status": 200,
+      "upstream": "200",
+      "bytes": 941,
+      "duration": 0.887,
+      "googleIP": "66.249.65.199",
+      "ptr": "crawl-66-249-65-199.googlebot.com",
+      "forward": [
+        "66.249.65.199"
+      ],
+      "officialCommonRange": true
+    },
+    {
+      "time": "2026-10-21T23:18:03+00:00",
+      "category": "InspectionTool",
+      "path": "/sitemap-index.xml",
+      "status": 200,
+      "upstream": "200",
+      "bytes": 941,
+      "duration": 0.954,
+      "googleIP": "66.249.65.204",
+      "ptr": "crawl-66-249-65-204.googlebot.com",
+      "forward": [
+        "66.249.65.204"
+      ],
+      "officialCommonRange": true
+    },
+    {
+      "time": "2026-10-21T23:18:03+00:00",
+      "category": "InspectionTool",
+      "path": "/sitemap-index.xml",
+      "status": 200,
+      "upstream": "200",
+      "bytes": 941,
+      "duration": 0.965,
+      "googleIP": "66.249.65.203",
+      "ptr": "crawl-66-249-65-203.googlebot.com",
+      "forward": [
+        "66.249.65.203"
+      ],
+      "officialCommonRange": true
+    }
+  ],
+  "verifiedGoogleRobots24h": [
+    {
+      "time": "2026-10-22T00:52:04+00:00",
+      "category": "Googlebot",
+      "path": "/robots.txt",
+      "status": 200,
+      "upstream": "",
+      "bytes": 105,
+      "duration": 0.0,
+      "googleIP": "66.249.65.200",
+      "ptr": "crawl-66-249-65-200.googlebot.com",
+      "forward": [
+        "66.249.65.200"
+      ],
+      "officialCommonRange": true
+    },
+    {
+      "time": "2026-10-22T04:57:19+00:00",
+      "category": "Googlebot",
+      "path": "/robots.txt",
+      "status": 200,
+      "upstream": "",
+      "bytes": 105,
+      "duration": 0.0,
+      "googleIP": "66.249.65.204",
+      "ptr": "crawl-66-249-65-204.googlebot.com",
+      "forward": [
+        "66.249.65.204"
+      ],
+      "officialCommonRange": true
+    },
+    {
+      "time": "2026-10-22T05:08:49+00:00",
+      "category": "Googlebot",
+      "path": "/robots.txt",
+      "status": 200,
+      "upstream": "",
+      "bytes": 105,
+      "duration": 0.0,
+      "googleIP": "66.249.65.201",
+      "ptr": "crawl-66-249-65-201.googlebot.com",
+      "forward": [
+        "66.249.65.201"
+      ],
+      "officialCommonRange": true
+    },
+    {
+      "time": "2026-10-21T07:59:05+00:00",
+      "category": "Googlebot",
+      "path": "/robots.txt",
+      "status": 200,
+      "upstream": "",
+      "bytes": 105,
+      "duration": 0.0,
+      "googleIP": "66.249.65.204",
+      "ptr": "crawl-66-249-65-204.googlebot.com",
+      "forward": [
+        "66.249.65.204"
+      ],
+      "officialCommonRange": true
+    },
+    {
+      "time": "2026-10-21T11:59:25+00:00",
+      "category": "Googlebot",
+      "path": "/robots.txt",
+      "status": 200,
+      "upstream": "",
+      "bytes": 105,
+      "duration": 0.0,
+      "googleIP": "66.249.65.199",
+      "ptr": "crawl-66-249-65-199.googlebot.com",
+      "forward": [
+        "66.249.65.199"
+      ],
+      "officialCommonRange": true
+    },
+    {
+      "time": "2026-10-21T16:24:53+00:00",
+      "category": "Googlebot",
+      "path": "/robots.txt",
+      "status": 200,
+      "upstream": "",
+      "bytes": 105,
+      "duration": 0.0,
+      "googleIP": "66.249.65.203",
+      "ptr": "crawl-66-249-65-203.googlebot.com",
+      "forward": [
+        "66.249.65.203"
+      ],
+      "officialCommonRange": true
+    },
+    {
+      "time": "2026-10-21T20:48:13+00:00",
+      "category": "Googlebot",
+      "path": "/robots.txt",
+      "status": 200,
+      "upstream": "",
+      "bytes": 105,
+      "duration": 0.0,
+      "googleIP": "66.249.65.192",
+      "ptr": "crawl-66-249-65-192.googlebot.com",
+      "forward": [
+        "66.249.65.192"
+      ],
+      "officialCommonRange": true
+    },
+    {
+      "time": "2026-10-21T22:18:57+00:00",
+      "category": "Googlebot",
+      "path": "/robots.txt",
+      "status": 200,
+      "upstream": "",
+      "bytes": 105,
+      "duration": 0.0,
+      "googleIP": "66.249.65.199",
+      "ptr": "crawl-66-249-65-199.googlebot.com",
+      "forward": [
+        "66.249.65.199"
+      ],
+      "officialCommonRange": true
+    },
+    {
+      "time": "2026-10-21T22:31:50+00:00",
+      "category": "GoogleOther",
+      "path": "/robots.txt",
+      "status": 200,
+      "upstream": "",
+      "bytes": 105,
+      "duration": 0.0,
+      "googleIP": "66.249.65.199",
+      "ptr": "crawl-66-249-65-199.googlebot.com",
+      "forward": [
+        "66.249.65.199"
+      ],
+      "officialCommonRange": true
+    }
+  ],
+  "latestAutomaticMap": {
+    "time": "2026-10-10T23:59:25+00:00",
+    "category": "Googlebot",
+    "path": "/sitemap-posts-post-1.xml",
+    "status": 200,
+    "upstream": "200",
+    "bytes": 1545,
+    "duration": 0.238,
+    "googleIP": "66.249.65.200",
+    "ptr": "crawl-66-249-65-200.googlebot.com",
+    "forward": [
+      "66.249.65.200"
+    ],
+    "officialCommonRange": true
+  },
+  "latestInspectionMap": {
+    "time": "2026-10-22T01:32:25+00:00",
+    "category": "InspectionTool",
+    "path": "/sitemap-index.xml",
+    "status": 200,
+    "upstream": "200",
+    "bytes": 941,
+    "duration": 0.894,
+    "googleIP": "66.249.65.200",
+    "ptr": "crawl-66-249-65-200.googlebot.com",
+    "forward": [
+      "66.249.65.200"
+    ],
+    "officialCommonRange": true
+  },
+  "latestVerifiedGoogle20": [
+    {
+      "time": "2026-10-22T05:08:49+00:00",
+      "category": "Googlebot",
+      "path": "/robots.txt",
+      "status": 200,
+      "upstream": "",
+      "bytes": 105,
+      "duration": 0.0,
+      "googleIP": "66.249.65.201",
+      "ptr": "crawl-66-249-65-201.googlebot.com",
+      "forward": [
+        "66.249.65.201"
+      ],
+      "officialCommonRange": true
+    },
+    {
+      "time": "2026-10-22T04:57:19+00:00",
+      "category": "Googlebot",
+      "path": "/robots.txt",
+      "status": 200,
+      "upstream": "",
+      "bytes": 105,
+      "duration": 0.0,
+      "googleIP": "66.249.65.204",
+      "ptr": "crawl-66-249-65-204.googlebot.com",
+      "forward": [
+        "66.249.65.204"
+      ],
+      "officialCommonRange": true
+    },
+    {
+      "time": "2026-10-22T01:32:25+00:00",
+      "category": "InspectionTool",
+      "path": "/sitemap-index.xml",
+      "status": 200,
+      "upstream": "200",
+      "bytes": 941,
+      "duration": 0.894,
+      "googleIP": "66.249.65.200",
+      "ptr": "crawl-66-249-65-200.googlebot.com",
+      "forward": [
+        "66.249.65.200"
+      ],
+      "officialCommonRange": true
+    },
+    {
+      "time": "2026-10-22T01:32:25+00:00",
+      "category": "InspectionTool",
+      "path": "/sitemap-index.xml",
+      "status": 200,
+      "upstream": "200",
+      "bytes": 941,
+      "duration": 0.887,
+      "googleIP": "66.249.65.199",
+      "ptr": "crawl-66-249-65-199.googlebot.com",
+      "forward": [
+        "66.249.65.199"
+      ],
+      "officialCommonRange": true
+    },
+    {
+      "time": "2026-10-22T00:52:04+00:00",
+      "category": "Googlebot",
+      "path": "/robots.txt",
+      "status": 200,
+      "upstream": "",
+      "bytes": 105,
+      "duration": 0.0,
+      "googleIP": "66.249.65.200",
+      "ptr": "crawl-66-249-65-200.googlebot.com",
+      "forward": [
+        "66.249.65.200"
+      ],
+      "officialCommonRange": true
+    },
+    {
+      "time": "2026-10-21T23:18:03+00:00",
+      "category": "InspectionTool",
+      "path": "/sitemap-index.xml",
+      "status": 200,
+      "upstream": "200",
+      "bytes": 941,
+      "duration": 0.954,
+      "googleIP": "66.249.65.204",
+      "ptr": "crawl-66-249-65-204.googlebot.com",
+      "forward": [
+        "66.249.65.204"
+      ],
+      "officialCommonRange": true
+    },
+    {
+      "time": "2026-10-21T23:18:03+00:00",
+      "category": "InspectionTool",
+      "path": "/sitemap-index.xml",
+      "status": 200,
+      "upstream": "200",
+      "bytes": 941,
+      "duration": 0.965,
+      "googleIP": "66.249.65.203",
+      "ptr": "crawl-66-249-65-203.googlebot.com",
+      "forward": [
+        "66.249.65.203"
+      ],
+      "officialCommonRange": true
+    },
+    {
+      "time": "2026-10-21T22:31:50+00:00",
+      "category": "GoogleOther",
+      "path": "/robots.txt",
+      "status": 200,
+      "upstream": "",
+      "bytes": 105,
+      "duration": 0.0,
+      "googleIP": "66.249.65.199",
+      "ptr": "crawl-66-249-65-199.googlebot.com",
+      "forward": [
+        "66.249.65.199"
+      ],
+      "officialCommonRange": true
+    },
+    {
+      "time": "2026-10-21T22:18:57+00:00",
+      "category": "Googlebot",
+      "path": "/robots.txt",
+      "status": 200,
+      "upstream": "",
+      "bytes": 105,
+      "duration": 0.0,
+      "googleIP": "66.249.65.199",
+      "ptr": "crawl-66-249-65-199.googlebot.com",
+      "forward": [
+        "66.249.65.199"
+      ],
+      "officialCommonRange": true
+    },
+    {
+      "time": "2026-10-21T20:48:13+00:00",
+      "category": "Googlebot",
+      "path": "/robots.txt",
+      "status": 200,
+      "upstream": "",
+      "bytes": 105,
+      "duration": 0.0,
+      "googleIP": "66.249.65.192",
+      "ptr": "crawl-66-249-65-192.googlebot.com",
+      "forward": [
+        "66.249.65.192"
+      ],
+      "officialCommonRange": true
+    },
+    {
+      "time": "2026-10-21T16:24:53+00:00",
+      "category": "Googlebot",
+      "path": "/robots.txt",
+      "status": 200,
+      "upstream": "",
+      "bytes": 105,
+      "duration": 0.0,
+      "googleIP": "66.249.65.203",
+      "ptr": "crawl-66-249-65-203.googlebot.com",
+      "forward": [
+        "66.249.65.203"
+      ],
+      "officialCommonRange": true
+    },
+    {
+      "time": "2026-10-21T11:59:25+00:00",
+      "category": "Googlebot",
+      "path": "/robots.txt",
+      "status": 200,
+      "upstream": "",
+      "bytes": 105,
+      "duration": 0.0,
+      "googleIP": "66.249.65.199",
+      "ptr": "crawl-66-249-65-199.googlebot.com",
+      "forward": [
+        "66.249.65.199"
+      ],
+      "officialCommonRange": true
+    },
+    {
+      "time": "2026-10-21T07:59:05+00:00",
+      "category": "Googlebot",
+      "path": "/robots.txt",
+      "status": 200,
+      "upstream": "",
+      "bytes": 105,
+      "duration": 0.0,
+      "googleIP": "66.249.65.204",
+      "ptr": "crawl-66-249-65-204.googlebot.com",
+      "forward": [
+        "66.249.65.204"
+      ],
+      "officialCommonRange": true
+    },
+    {
+      "time": "2026-10-21T02:53:15+00:00",
+      "category": "Googlebot",
+      "path": "/robots.txt",
+      "status": 200,
+      "upstream": "",
+      "bytes": 105,
+      "duration": 0.0,
+      "googleIP": "66.249.65.199",
+      "ptr": "crawl-66-249-65-199.googlebot.com",
+      "forward": [
+        "66.249.65.199"
+      ],
+      "officialCommonRange": true
+    },
+    {
+      "time": "2026-10-20T18:08:19+00:00",
+      "category": "Googlebot",
+      "path": "/robots.txt",
+      "status": 200,
+      "upstream": "",
+      "bytes": 105,
+      "duration": 0.0,
+      "googleIP": "66.249.65.200",
+      "ptr": "crawl-66-249-65-200.googlebot.com",
+      "forward": [
+        "66.249.65.200"
+      ],
+      "officialCommonRange": true
+    },
+    {
+      "time": "2026-10-20T13:58:13+00:00",
+      "category": "Googlebot",
+      "path": "/robots.txt",
+      "status": 200,
+      "upstream": "",
+      "bytes": 105,
+      "duration": 0.0,
+      "googleIP": "66.249.65.200",
+      "ptr": "crawl-66-249-65-200.googlebot.com",
+      "forward": [
+        "66.249.65.200"
+      ],
+      "officialCommonRange": true
+    },
+    {
+      "time": "2026-10-20T12:58:52+00:00",
+      "category": "Googlebot",
+      "path": "/robots.txt",
+      "status": 200,
+      "upstream": "",
+      "bytes": 105,
+      "duration": 0.0,
+      "googleIP": "66.249.65.204",
+      "ptr": "crawl-66-249-65-204.googlebot.com",
+      "forward": [
+        "66.249.65.204"
+      ],
+      "officialCommonRange": true
+    },
+    {
+      "time": "2026-10-20T09:49:10+00:00",
+      "category": "InspectionTool",
+      "path": "/sitemap-index.xml",
+      "status": 200,
+      "upstream": "200",
+      "bytes": 941,
+      "duration": 0.757,
+      "googleIP": "66.249.65.203",
+      "ptr": "crawl-66-249-65-203.googlebot.com",
+      "forward": [
+        "66.249.65.203"
+      ],
+      "officialCommonRange": true
+    },
+    {
+      "time": "2026-10-20T09:49:09+00:00",
+      "category": "InspectionTool",
+      "path": "/sitemap-index.xml",
+      "status": 200,
+      "upstream": "200",
+      "bytes": 941,
+      "duration": 0.719,
+      "googleIP": "66.249.65.203",
+      "ptr": "crawl-66-249-65-203.googlebot.com",
+      "forward": [
+        "66.249.65.203"
+      ],
+      "officialCommonRange": true
+    },
+    {
+      "time": "2026-10-20T09:48:03+00:00",
+      "category": "Googlebot",
+      "path": "/robots.txt",
+      "status": 200,
+      "upstream": "",
+      "bytes": 105,
+      "duration": 0.0,
+      "googleIP": "66.249.65.192",
+      "ptr": "crawl-66-249-65-192.googlebot.com",
+      "forward": [
+        "66.249.65.192"
+      ],
+      "officialCommonRange": true
+    }
+  ],
+  "allMapRobots24hStatusCounts": {
+    "200": 636,
+    "404": 33,
+    "301": 73,
+    "502": 5,
+    "304": 1
+  },
+  "unverifiedGoogleUA24hCount": 18,
+  "limitations": [
+    "Origin arrivals only: no statement about rejected or edge-cached requests.",
+    "User-agent category is separate from forward-confirmed reverse DNS identity.",
+    "No visitor IPs emitted; only verified public Google addresses."
+  ]
+}
