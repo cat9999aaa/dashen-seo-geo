@@ -1,0 +1,13 @@
+--- a/renderer-fragment.js
++++ b/renderer-fragment.js
+@@ -32,8 +32,8 @@
+           const lastmod = item.lastmod ? escapeXml(String(item.lastmod)) : "";
+           return `
+               <url>
+-                <loc>${loc}</loc>${hreflangs.join("")}${xDefault}
+-                ${lastmod ? `<lastmod>${lastmod}</lastmod>` : ""}
++                <loc>${loc}</loc>
++                ${lastmod ? `<lastmod>${lastmod}</lastmod>` : ""}${hreflangs.join("")}${xDefault}
+               </url>`;
+         });
+         str = `<?xml version="1.0" encoding="UTF-8"?>

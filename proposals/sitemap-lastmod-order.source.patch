@@ -1,0 +1,13 @@
+--- a/layers/base/server/middleware/sitemap.js
++++ b/layers/base/server/middleware/sitemap.js
+@@ -165,8 +165,8 @@
+ 
+             return `
+               <url>
+-                <loc>${loc}</loc>${hreflangs.join("")}${xDefault}
+-                ${lastmod ? `<lastmod>${lastmod}</lastmod>` : ""}
++                <loc>${loc}</loc>
++                ${lastmod ? `<lastmod>${lastmod}</lastmod>` : ""}${hreflangs.join("")}${xDefault}
+               </url>`;
+           });
+ 
