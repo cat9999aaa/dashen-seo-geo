@@ -1,0 +1,19 @@
+
+> test
+> node --test tests/*.test.mjs
+
+✔ public SEO action validates route before compiling a read-only query (1.088301ms)
+✔ release manifest authorizes exactly the server action exported by this package (7.372505ms)
+✔ head repair supplies reciprocal published languages and resolvable schema entities (5.511086ms)
+✔ localized home uses itself without adding fabricated language equivalents (0.286224ms)
+✔ stale metadata, foreign hosts, untrusted URLs and unrelated custom JSON are preserved safely (0.276945ms)
+✔ native relative FAQ entities are normalized before checking article references (0.227879ms)
+✔ publisher ID is opaque and does not permit rewriting a Person named UME (0.230649ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 70.369159

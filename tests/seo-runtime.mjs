@@ -27,7 +27,7 @@ const response=path=>({data:{guaqi:{common:{module:{dashenSeoHead:JSON.stringify
 const nativeTags=path=>({link:[{rel:'canonical',href:origin+path}],meta:[{property:'og:site_name',content:'大神网'}],script:[{type:'application/ld+json',innerHTML:JSON.stringify({'@context':'https://schema.org','@graph':[{'@type':'Article','@id':path+'/#article',author:{'@type':'Person',name:'大神',url:origin+'/profile/3'},publisher:{'@id':origin+'/#organization'},articleSection:[''],mainEntity:{'@id':path+'/#faq'}},{'@type':'FAQPage','@id':path+'/#faq',mainEntity:[]}]})}]});
 const work=await mkdtemp(join(tmpdir(),'dashen-seo-runtime-'));
 try{
- const zip=await buildRuntimePlugin(resolve(import.meta.dirname,'..'),{outputDirectory:join(work,'build')});
+ const zip=process.env.GUAQI_TEST_ZIP||await buildRuntimePlugin(resolve(import.meta.dirname,'..'),{outputDirectory:join(work,'build')});
  new AdmZip(zip).extractAllTo(join(work,'package'));
  globalThis.__GUAQI_RUNTIME_PLUGIN_V3_SERVER__={Vue,VueServerRenderer:renderer};
  const registration=(await import(pathToFileURL(join(work,'package/node/server/index.mjs')).href)).default;

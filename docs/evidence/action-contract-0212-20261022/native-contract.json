@@ -1,0 +1,13 @@
+{
+  "root_production_contract_evidence": {
+    "source_path": "/srv/dashen/node/current/server/chunks/_/nitro.mjs",
+    "source_sha256": "c2645bdedb260e1df2ad2ef386ba42bf7d8ed31dc32218ecf007ab25c5fc6782",
+    "snippet": "function assertDeclared(registrationsMap, declarations, field) {\n  const declared = new Set(declarations);\n  for (const key of Object.keys(registrationsMap)) {\n    if (!declared.has(key)) throw new TypeError(`runtime plugin server ${field} is undeclared: ${key}`);\n  }\n}\nfunction buildSnapshot(frontend, generation, loaded, capabilities) {\n  const snapshot = createSnapshot(frontend, generation);\n  for (const item of lo"
+  },
+  "local_native_registry_sha256": "93160d17a47e2f08ecc07d8fc0de25478c6e4e52dbe3edfc4721dc3dd0e4ad72",
+  "local_native_manifest_sha256": "887ee6117bbd8e732b034c71d3f2bb998eac1dc0e15332399a6cfff4a8a570e0",
+  "runtime_scope": "Only manifest version + declared actions changed; all owned PHP/Vue/Node implementations unchanged from merged main61a899dd",
+  "build_count": 1,
+  "reused_fixed_zip_in_all_integration_tests": true,
+  "integration_note": "Source-only native action test uses explicit component placeholders; fixed ZIP mode loads the actual compiled server registration. Registry implementation is real in both modes. SSR/head HTTP data is bounded synthetic metadata, not a live production request."
+}

@@ -1,6 +1,6 @@
 # 大神 Seo geo 运行时插件
 
-当前候选版本 0.2.11（生产仍为 0.2.10）。归属大神网，源码位于本目录；生产通过瓜奇运行时插件 ZIP 安装和为 `dashen.wang` 单独启用。安装包也放在 GitHub Release：<https://github.com/cat9999aaa/dashen-seo-geo>。
+当前候选版本 0.2.12（生产仍为 0.2.10；0.2.11 因缺少原生 action 声明未激活）。归属大神网，源码位于本目录；生产通过瓜奇运行时插件 ZIP 安装和为 `dashen.wang` 单独启用。安装包也放在 GitHub Release：<https://github.com/cat9999aaa/dashen-seo-geo>。
 
 ## 功能
 

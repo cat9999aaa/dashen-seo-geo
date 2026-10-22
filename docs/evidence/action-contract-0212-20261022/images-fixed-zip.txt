@@ -1,0 +1,1 @@
+PASS: official SDK package, native SSR Image/CommonAvatar, escaping, explicit alt preservation, official static replacement targets.
