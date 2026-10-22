@@ -1,6 +1,7 @@
 # 六条已提交 sitemap 旧地址：内部 rewrite 候选
 
-归属 `plugin_dashen_seo_geo`。只准备源码/计划/隔离验证；生产写入由 root 独占。
+归属 `plugin_dashen_seo_geo`。候选阶段本代理只准备源码/计划/隔离验证；生产写入由 root 独占。
+根代理随后实际应用，末节记录独立公网验收与仍未闭环的Google状态。
 不改 SEO 版本、固定 ZIP、XML、原文、日期、分页、原生 Node 或 robots。
 
 ## 已证的问题与范围
@@ -87,7 +88,7 @@ python3 ops/tests/sitemap_alias_nginx_fixture.py \
   --output /private/after-green.json --expect-fixed
 ```
 
-## Root 发布与回退清单（尚未执行）
+## Root 发布与回退清单（候选阶段记录）
 
 1. Root唯一生产writer；整个备份/验证/热重载/验收/必要回退期间持统一
    `/etc/nginx/sites-available/.dashen-nginx-config.lock`。合作锁不防任意外部root写者。
@@ -106,5 +107,26 @@ python3 ops/tests/sitemap_alias_nginx_fixture.py \
    原mode/uid/gid原子恢复+目录fsync、`nginx -t`、同样热reload及worker等待、复查原状态。
    日志收据失败不能阻断回退；完整保存原失败/回退结果，不覆盖旧证据。
 
-Root实际运行前仍须独立审查自己的发布helper。这里记录候选与操作清单，尚无生产执行收据。
+Root实际运行前须独立审查自己的发布helper。上述清单本身不代替实际生产执行收据。
 不重新提交任何地图；alias直出兼容修复与Google异步处理成功分别验收。
+
+## 根代理实际发布与独立公网验收
+
+根代理报告在2026-10-22约05:54 UTC完成同锁/精确SHA/私有原件备份/实机nginx-t/
+新worker稳定检查后应用。生产配置现为上述after SHA `ddef8138…`。
+初版root wrapper对完整文件做alias计数，遇到HTTP重复规则而在任何写入前拒绝；
+root修为严格HTTPS anchor后重放才通过。旧失败/修复收据由根代理保留，未重写成成功。
+其源站12alias/query、5canonical、6negative验收通过；没有重启Node或修改Cloudflare。
+这些执行事实来自根代理收据，本代理没有执行生产写入。
+
+本代理独立在**05:54:49.832797 UTC / 13:54:49 CST**执行正常公网DNS/TLS HTTP/2 GET，
+没有使用origin `--resolve`，没有purge：
+
+- 6alias全部200，`application/xml; charset=utf-8`，无Location。
+- 6alias均CF DYNAMIC、private/no-store，无Age，没有旧301缓存复现，无需purge。
+- 与同轮fresh4canonical XML逐个decoded SHA/字节数完全一致，TLSverify0。
+- 证据`alias-production-public-independent.json`保留safeheaders、CF-Ray与哈希；不含XML正文。
+
+因此6条旧提交地址的公网直出XML兼容问题已实际修复。这是此次客户端/边缘路径的验收，
+不代表所有边缘位置、未来请求或Google后台已通过。主index此前本就200，它的Google
+异步抓取/处理仍未闭环；本轮未重提地图、未请求索引、未操作BFM或Google浏览器页面。

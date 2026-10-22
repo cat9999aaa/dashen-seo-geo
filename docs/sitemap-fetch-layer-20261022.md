@@ -132,3 +132,12 @@ No entire nginx configuration, vendor bundle, backup or article body is saved.
 
 Google's robots status/caching specification was also checked; a200 allow-all
 response here provides no new robots restriction to fix.
+
+## Subsequent bounded repair
+
+The six historical submitted301 URLs were subsequently changed by root to
+internal rewrites. Independent public HTTPS verification at05:54:49 UTC found
+all six200/XML with noLocation, DYNAMIC/noAge and canonical-identical bytes.
+See `sitemap-alias-candidate-20261022.md` and its production-public receipt.
+The exact canonical index was already200 and its Google processing failure
+remains unexplained; this compatibility repair is not claimed as that root cause.

@@ -1,0 +1,202 @@
+{
+  "atUTC": "2026-10-22T05:54:49.832797+00:00",
+  "layer": "public Cloudflare DNS/normal TLS, not --resolve origin",
+  "aliasCount": 6,
+  "canonicalCount": 4,
+  "passed": true,
+  "rows": [
+    {
+      "path": "/sitemap-index.xml",
+      "status": 200,
+      "sslVerify": 0,
+      "protocol": "2",
+      "exit": 0,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8",
+        "vary": "Accept-Encoding",
+        "cache-control": "private, no-store",
+        "cf-cache-status": "DYNAMIC",
+        "cf-ray": "a4e63fd65a135890-EWR"
+      },
+      "decodedSHA256": "cbc86935aee4e3dc11a873e088d286e73f60f1905ecc2a3396b07c6d53f15ac9",
+      "decodedBytes": 9983,
+      "gzipCRCValid": true,
+      "xmlRootLike": true
+    },
+    {
+      "path": "/sitemap-posts-post-1.xml",
+      "status": 200,
+      "sslVerify": 0,
+      "protocol": "2",
+      "exit": 0,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8",
+        "vary": "Accept-Encoding",
+        "cache-control": "private, no-store",
+        "cf-cache-status": "DYNAMIC",
+        "cf-ray": "a4e63fd67eb88ce3-EWR"
+      },
+      "decodedSHA256": "9db5e5ccd685b01346fa5c4b28350a7562c52c6624e1d6d76386be6da2792c90",
+      "decodedBytes": 37496,
+      "gzipCRCValid": true,
+      "xmlRootLike": true
+    },
+    {
+      "path": "/sitemap-posts-post-2.xml",
+      "status": 200,
+      "sslVerify": 0,
+      "protocol": "2",
+      "exit": 0,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8",
+        "vary": "Accept-Encoding",
+        "cache-control": "private, no-store",
+        "cf-cache-status": "DYNAMIC",
+        "cf-ray": "a4e63fd64f15ea5b-EWR"
+      },
+      "decodedSHA256": "74b578f1cc84da32fcd4d554c5365582746a1c415c3ca4ceba5ce2235b7a60f4",
+      "decodedBytes": 37589,
+      "gzipCRCValid": true,
+      "xmlRootLike": true
+    },
+    {
+      "path": "/sitemap-posts-post-3.xml",
+      "status": 200,
+      "sslVerify": 0,
+      "protocol": "2",
+      "exit": 0,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8",
+        "vary": "Accept-Encoding",
+        "cache-control": "private, no-store",
+        "cf-cache-status": "DYNAMIC",
+        "cf-ray": "a4e63fd94c707d1a-EWR"
+      },
+      "decodedSHA256": "138a751ce1ac55085802c7578363022431a11ab0b9496d3bd885ce014ef66052",
+      "decodedBytes": 37589,
+      "gzipCRCValid": true,
+      "xmlRootLike": true
+    },
+    {
+      "path": "/sitemap.xml",
+      "status": 200,
+      "sslVerify": 0,
+      "protocol": "2",
+      "exit": 0,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8",
+        "vary": "Accept-Encoding",
+        "cache-control": "private, no-store",
+        "cf-cache-status": "DYNAMIC",
+        "cf-ray": "a4e63fd98a31da06-EWR"
+      },
+      "decodedSHA256": "cbc86935aee4e3dc11a873e088d286e73f60f1905ecc2a3396b07c6d53f15ac9",
+      "decodedBytes": 9983,
+      "gzipCRCValid": true,
+      "xmlRootLike": true,
+      "canonicalPath": "/sitemap-index.xml",
+      "matchesCanonical": true
+    },
+    {
+      "path": "/wp-sitemap.xml",
+      "status": 200,
+      "sslVerify": 0,
+      "protocol": "2",
+      "exit": 0,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8",
+        "vary": "Accept-Encoding",
+        "cache-control": "private, no-store",
+        "cf-cache-status": "DYNAMIC",
+        "cf-ray": "a4e63fdb79c283ad-EWR"
+      },
+      "decodedSHA256": "cbc86935aee4e3dc11a873e088d286e73f60f1905ecc2a3396b07c6d53f15ac9",
+      "decodedBytes": 9983,
+      "gzipCRCValid": true,
+      "xmlRootLike": true,
+      "canonicalPath": "/sitemap-index.xml",
+      "matchesCanonical": true
+    },
+    {
+      "path": "/post-sitemap.xml",
+      "status": 200,
+      "sslVerify": 0,
+      "protocol": "2",
+      "exit": 0,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8",
+        "vary": "Accept-Encoding",
+        "cache-control": "private, no-store",
+        "cf-cache-status": "DYNAMIC",
+        "cf-ray": "a4e63fdcbf883d3e-EWR"
+      },
+      "decodedSHA256": "cbc86935aee4e3dc11a873e088d286e73f60f1905ecc2a3396b07c6d53f15ac9",
+      "decodedBytes": 9983,
+      "gzipCRCValid": true,
+      "xmlRootLike": true,
+      "canonicalPath": "/sitemap-index.xml",
+      "matchesCanonical": true
+    },
+    {
+      "path": "/wp-sitemap-posts-post-1.xml",
+      "status": 200,
+      "sslVerify": 0,
+      "protocol": "2",
+      "exit": 0,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8",
+        "vary": "Accept-Encoding",
+        "cache-control": "private, no-store",
+        "cf-cache-status": "DYNAMIC",
+        "cf-ray": "a4e63fe00cd83ee0-EWR"
+      },
+      "decodedSHA256": "9db5e5ccd685b01346fa5c4b28350a7562c52c6624e1d6d76386be6da2792c90",
+      "decodedBytes": 37496,
+      "gzipCRCValid": true,
+      "xmlRootLike": true,
+      "canonicalPath": "/sitemap-posts-post-1.xml",
+      "matchesCanonical": true
+    },
+    {
+      "path": "/wp-sitemap-posts-post-2.xml",
+      "status": 200,
+      "sslVerify": 0,
+      "protocol": "2",
+      "exit": 0,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8",
+        "vary": "Accept-Encoding",
+        "cache-control": "private, no-store",
+        "cf-cache-status": "DYNAMIC",
+        "cf-ray": "a4e63fe28ec53d08-EWR"
+      },
+      "decodedSHA256": "74b578f1cc84da32fcd4d554c5365582746a1c415c3ca4ceba5ce2235b7a60f4",
+      "decodedBytes": 37589,
+      "gzipCRCValid": true,
+      "xmlRootLike": true,
+      "canonicalPath": "/sitemap-posts-post-2.xml",
+      "matchesCanonical": true
+    },
+    {
+      "path": "/wp-sitemap-posts-post-3.xml",
+      "status": 200,
+      "sslVerify": 0,
+      "protocol": "2",
+      "exit": 0,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8",
+        "vary": "Accept-Encoding",
+        "cache-control": "private, no-store",
+        "cf-cache-status": "DYNAMIC",
+        "cf-ray": "a4e63fe2cb2946dc-EWR"
+      },
+      "decodedSHA256": "138a751ce1ac55085802c7578363022431a11ab0b9496d3bd885ce014ef66052",
+      "decodedBytes": 37589,
+      "gzipCRCValid": true,
+      "xmlRootLike": true,
+      "canonicalPath": "/sitemap-posts-post-3.xml",
+      "matchesCanonical": true
+    }
+  ],
+  "actions": "GET only; no purge, config changes, GSC submission or Google impersonation"
+}
